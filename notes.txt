@@ -1,0 +1,4 @@
+game managment app
+1 database for games
+1 database for developers
+1 database for genres
