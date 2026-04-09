@@ -1,4 +1,7 @@
-game managment app
-1 database for games
-1 database for developers
-1 database for genres
+game managment app database
+1 table for games (id, name, dev_ids genres, release_date)
+1 table for developers (id, name, game_ids)
+1 table for genres (id, name, game_ids)
+
+
+
