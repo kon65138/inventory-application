@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS genres (
   id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY, name VARCHAR ( 255 ) UNIQUE);
 
 CREATE TABLE IF NOT EXISTS games (
-  id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY, name VARCHAR ( 255 ), release_date VARCHAR(255), genre_id BIGINT REFERENCES genres (id), developer_id BIGINT REFERENCES developers (id));
+  id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY, name VARCHAR ( 255 ), release_date VARCHAR(255), game_link VARCHAR(255), genre_id BIGINT REFERENCES genres (id), developer_id BIGINT REFERENCES developers (id));
 `;
 
 function randSelect100Games() {
@@ -20,6 +20,7 @@ function randSelect100Games() {
     if (game.Game === null) return true;
     if (game.Genre === null) return true;
     if (game.Dev === null) return true;
+    if (game.GameLink === null) return true;
     if (game.Year === null) return true;
     if (game.Dev.trim().slice(-1) === ',') return true;
     if (devNames.includes(game.Dev)) return true;
@@ -149,12 +150,13 @@ async function main() {
     const gameRows = selectedGames.map((game, i) => [
       game.Game,
       game.Year,
+      game.GameLink,
       genreMap[primaryGenreNames[i]],
       devMap[primaryDevNames[i]],
     ]);
     await client.query(
       format(
-        `INSERT INTO games (name, release_date, genre_id, developer_id) VALUES %L`,
+        `INSERT INTO games (name, release_date, game_link, genre_id, developer_id) VALUES %L`,
         gameRows,
       ),
     );
