@@ -6,13 +6,33 @@ const XBOXGames = require('./XBOX360Games.json');
 
 const createTablesSQL = `
 CREATE TABLE IF NOT EXISTS developers (
-  id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY, name VARCHAR ( 255 ) UNIQUE);
+  id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  name VARCHAR(255) UNIQUE
+);
 
 CREATE TABLE IF NOT EXISTS genres (
-  id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY, name VARCHAR ( 255 ) UNIQUE);
+  id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  name VARCHAR(255) UNIQUE
+);
 
 CREATE TABLE IF NOT EXISTS games (
-  id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY, name VARCHAR ( 255 ), release_date VARCHAR(255), game_link VARCHAR(255), genre_id BIGINT REFERENCES genres (id), developer_id BIGINT REFERENCES developers (id));
+  id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  name VARCHAR(255),
+  release_date VARCHAR(255),
+  game_link VARCHAR(255)
+);
+
+CREATE TABLE IF NOT EXISTS games_developers (
+  game_id INTEGER REFERENCES games(id),
+  developer_id INTEGER REFERENCES developers(id),
+  PRIMARY KEY (game_id, developer_id)
+);
+
+CREATE TABLE IF NOT EXISTS games_genres (
+  game_id INTEGER REFERENCES games(id),
+  genre_id INTEGER REFERENCES genres(id),
+  PRIMARY KEY (game_id, genre_id)
+);
 `;
 
 function randSelect100Games() {
@@ -60,10 +80,11 @@ async function main() {
     const selectedGames = randSelect100Games();
 
     console.log('populating tables...');
+
     // Insert devs and capture returned IDs
+    console.log('inserting developers...');
     let devRows = [];
     let extraDevs = [];
-    const primaryDevNames = []; // tracks which name to look up per game
 
     devRows = selectedGames.map((game) => {
       let devs = game.Dev;
@@ -75,14 +96,12 @@ async function main() {
 
       if (delimiter) {
         const parts = devs.split(delimiter).map((s) => s.trim());
-        primaryDevNames.push(parts[0]); // store the primary name for this game
         for (let i = 1; i < parts.length; i++) {
           extraDevs.push([parts[i]]);
         }
         return [parts[0]];
       }
 
-      primaryDevNames.push(game.Dev);
       return [game.Dev];
     });
     devRows = devRows.concat(extraDevs);
@@ -105,7 +124,6 @@ async function main() {
     console.log('inserting genres...');
     let genreRows = [];
     let extraGenres = [];
-    const primaryGenreNames = []; // tracks which name to look up per game
 
     genreRows = selectedGames.map((game) => {
       let genres = game.Genre;
@@ -117,14 +135,12 @@ async function main() {
 
       if (delimiter) {
         const parts = genres.split(delimiter).map((s) => s.trim());
-        primaryGenreNames.push(parts[0]);
         for (let i = 1; i < parts.length; i++) {
           extraGenres.push([parts[i]]);
         }
         return [parts[0]];
       }
 
-      primaryGenreNames.push(game.Genre);
       return [game.Genre];
     });
     genreRows = genreRows.concat(extraGenres);
@@ -145,19 +161,70 @@ async function main() {
       genreMap[name] = id;
     });
 
-    // Insert games using the FK IDs from the maps
+    // Insert games first (no FK columns needed anymore)
     console.log('inserting games...');
-    const gameRows = selectedGames.map((game, i) => [
+    const gameRows = selectedGames.map((game) => [
       game.Game,
       game.Year,
       game.GameLink,
-      genreMap[primaryGenreNames[i]],
-      devMap[primaryDevNames[i]],
     ]);
+    const gameResult = await client.query(
+      format(
+        `INSERT INTO games (name, release_date, game_link) VALUES %L RETURNING id, name`,
+        gameRows,
+      ),
+    );
+    // Build a lookup map: game name -> id
+    const gameMap = {};
+    gameResult.rows.forEach(({ id, name }) => {
+      gameMap[name] = id;
+    });
+
+    // Insert junction rows for games <-> developers
+    console.log('inserting games_developers...');
+    const gameDevRows = [];
+    selectedGames.forEach((game) => {
+      const gameId = gameMap[game.Game];
+      let devs = game.Dev;
+      let delimiter = null;
+      if (devs.includes(',')) delimiter = ',';
+      else if (devs.includes(' - ')) delimiter = ' - ';
+      else if (devs.includes('/')) delimiter = '/';
+      const parts = delimiter
+        ? devs.split(delimiter).map((s) => s.trim())
+        : [devs];
+      parts.forEach((dev) => {
+        if (devMap[dev]) gameDevRows.push([gameId, devMap[dev]]);
+      });
+    });
     await client.query(
       format(
-        `INSERT INTO games (name, release_date, game_link, genre_id, developer_id) VALUES %L`,
-        gameRows,
+        `INSERT INTO games_developers (game_id, developer_id) VALUES %L`,
+        gameDevRows,
+      ),
+    );
+
+    // Insert junction rows for games <-> genres
+    console.log('inserting games_genres...');
+    const gameGenreRows = [];
+    selectedGames.forEach((game) => {
+      const gameId = gameMap[game.Game];
+      let genres = game.Genre;
+      let delimiter = null;
+      if (genres.includes(',')) delimiter = ',';
+      else if (genres.includes(' - ')) delimiter = ' - ';
+      else if (genres.includes('/')) delimiter = '/';
+      const parts = delimiter
+        ? genres.split(delimiter).map((s) => s.trim())
+        : [genres];
+      parts.forEach((genre) => {
+        if (genreMap[genre]) gameGenreRows.push([gameId, genreMap[genre]]);
+      });
+    });
+    await client.query(
+      format(
+        `INSERT INTO games_genres (game_id, genre_id) VALUES %L`,
+        gameGenreRows,
       ),
     );
     console.log('done');
