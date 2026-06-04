@@ -1,5 +1,13 @@
+const db = require('../models/queries');
+
 async function get(req, res) {
-  res.render('index', { title: '100 XBOX360 GAMES' });
+  try {
+    const games = await db.getAllGames();
+    res.render('index', { title: '100 XBOX360 GAMES', games: games });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Database error');
+  }
 }
 
 module.exports = { get };

@@ -19,7 +19,8 @@ CREATE TABLE IF NOT EXISTS games (
   id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
   name VARCHAR(255),
   release_date VARCHAR(255),
-  game_link VARCHAR(255)
+  game_link VARCHAR(255),
+  img_src VARCHAR(255)
 );
 
 CREATE TABLE IF NOT EXISTS games_developers (
@@ -62,6 +63,61 @@ function randSelect100Games() {
     games.push(XBOXGames[num[i]]);
   }
   return games;
+}
+
+async function getWikipediaImage(wikiUrl) {
+  if (!wikiUrl) {
+    console.log('no wiki url, returning null');
+    return null;
+  }
+
+  try {
+    const slug = wikiUrl.split('/wiki/')[1];
+    if (!slug) {
+      console.log('non wiki url, returning null');
+      return null;
+    } // guard against non-/wiki/ URLs
+
+    // The slug is already URL-encoded; decode it so URLSearchParams
+    // can encode it exactly once.
+    const title = decodeURIComponent(slug);
+
+    const params = new URLSearchParams({
+      action: 'query',
+      titles: title,
+      prop: 'pageimages',
+      piprop: 'thumbnail',
+      pithumbsize: '500',
+      pilicense: 'any', // <-- include non-free box art
+      format: 'json',
+      formatversion: '2',
+      redirects: '1',
+    });
+    const apiUrl = `https://en.wikipedia.org/w/api.php?${params}`;
+
+    const response = await fetch(apiUrl, {
+      headers: {
+        'User-Agent':
+          'xbox360-inventory-app/1.0 (156806318+kon65138@users.noreply.github.com)',
+      },
+    });
+    if (!response.ok) {
+      console.error(`HTTP ${response.status} for ${wikiUrl}`);
+      return null;
+    }
+
+    const data = await response.json();
+    const page = data.query?.pages?.[0]; // formatversion=2: pages is an array
+    console.log('returning:', page?.thumbnail?.source);
+    return page?.thumbnail?.source ?? null;
+  } catch (err) {
+    console.error(`Failed to get image for ${wikiUrl}:`, err.message);
+    return null;
+  }
+}
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 async function main() {
@@ -163,14 +219,17 @@ async function main() {
 
     // Insert games first (no FK columns needed anymore)
     console.log('inserting games...');
-    const gameRows = selectedGames.map((game) => [
-      game.Game,
-      game.Year,
-      game.GameLink,
-    ]);
+    const gameRows = [];
+    for (let i = 0; i < selectedGames.length; i++) {
+      const game = selectedGames[i];
+      const imgSrc = await getWikipediaImage(game.GameLink);
+      await sleep(150);
+      gameRows.push([game.Game, game.Year, game.GameLink, imgSrc]);
+    }
+
     const gameResult = await client.query(
       format(
-        `INSERT INTO games (name, release_date, game_link) VALUES %L RETURNING id, name`,
+        `INSERT INTO games (name, release_date, game_link, img_src) VALUES %L RETURNING id, name`,
         gameRows,
       ),
     );
