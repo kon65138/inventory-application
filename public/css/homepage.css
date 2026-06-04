@@ -3,12 +3,48 @@
   align-items: center;
   justify-content: center;
   flex: 1;
-  gap: 1rem;
+  gap: 1vw;
   flex-wrap: wrap;
 }
 
 .game {
-  background: gray;
+  display: flex;
+  flex-direction: column;
+  background: rgba(0, 0, 0, 0.199);
   height: 20vw;
   width: 15vw;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  border-radius: 15px;
+  transition: transform 150ms ease-in-out;
+}
+
+.game:hover {
+  transform: scale(1.05);
+}
+
+.gameImg {
+  max-width: 14vw;
+  max-height: 16vw;
+  padding: 1vw;
+  display: flex;
+  flex: 1;
+}
+
+.gameImg img {
+  overflow: hidden;
+  object-fit: contain;
+}
+
+.gameName {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 1vw;
+  height: 4vw;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.171);
+  display: flex;
+  flex: 0 0 1;
 }
