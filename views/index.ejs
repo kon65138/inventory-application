@@ -16,7 +16,7 @@
         <% if (locals.games) {games.forEach(game => { %> 
             <div class="game">
                 <div class="gameImg">
-                    <img src="<%= game.img_src %>" alt="videogame thumbnail img">
+                    <img src="<%= game.img_src ? game.img_src : '/imgs/javier-martinez-hUD0PUczwJQ-unsplash.jpg' %>" alt="videogame thumbnail img">
                 </div>
                 <div class="gameName">
                     <%= game.name %>
