@@ -12,9 +12,10 @@
       <a href="/" id="title">100 XBOX360 GAMES<a>
       <a href="/category" id="categories">categories</a>
     </div>
-    <div class="gamesContainer">
+    
+    <div class="gamesContainer" >
         <% if (locals.games) {games.forEach(game => { %> 
-            <div class="game">
+            <div class="game" onclick="window.location.href='/game/<%= game.id %>'">
                 <div class="gameImg">
                     <img src="<%= game.img_src ? game.img_src : '/imgs/javier-martinez-hUD0PUczwJQ-unsplash.jpg' %>" alt="videogame thumbnail img">
                 </div>
@@ -22,7 +23,7 @@
                     <%= game.name %>
                 </div>
             </div>
-        <% })} %>
+            <% })} %>
     </div>
   </body>
 </html>
