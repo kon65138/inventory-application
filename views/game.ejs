@@ -13,23 +13,30 @@
       <a href="/category" id="categories">categories</a>
     </div>
     <div class="mainContainer">
-      <div class="gameImgAndTitle">
-        <div class="gameImgContainer">
-          <img
-            src="<%= game.img_src ? game.img_src : '/imgs/javier-martinez-hUD0PUczwJQ-unsplash.jpg' %>"
-            alt="videogame thumbnail img"
-            class="gameImg %>"
-          />
+      <div class="left">
+        <div class="gameImgAndTitle">
+          <div class="gameImgContainer">
+            <img
+              src="<%= game.img_src ? game.img_src : '/imgs/javier-martinez-hUD0PUczwJQ-unsplash.jpg' %>"
+              alt="videogame thumbnail img"
+              class="gameImg"
+            />
+          </div>
+          <h2 class="gameTitle"><%= game.name %></h2>
         </div>
-        <div class="GameTitleContainer"><%= game.name %></div>
       </div>
-      <div class="gameInfo">
-        <ul class="infoList">
-          <li class="">Developers: <%= game.developers %></li>
-          <li class="">Genres: <%= game.genres %></li>
-          <li class="">Release Date: <%= game.release_date %></li>
-          <li class="">Wikipedia link: <%= game.game_link %></li>
-        </ul>
+      <div class="right">
+        <div class="gameInfo">
+          <ul class="infoList">
+            <li class="">Developers: <%= game.developers %></li>
+            <li class="">Genres: <%= game.genres %></li>
+            <li class="">Release Date: <%= game.release_date %></li>
+            <li class="">
+              Wikipedia page:
+              <a href="<%= game.game_link %>" target="_blank">link</a>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </body>

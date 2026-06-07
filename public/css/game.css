@@ -1,4 +1,70 @@
 .mainContainer {
+  height: 100%;
+  display: flex;
+  width: 100%;
+  flex: 1;
+}
+
+.left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  height: 100%;
+  max-width: 48vw;
+}
+.gameImgAndTitle {
+  display: flex;
+  flex-direction: column;
+  height: inherit;
+  justify-content: space-around;
+  align-items: center;
+  background-color: rgba(240, 248, 255, 0.192);
+  border-radius: 15px;
+  padding: 1vw;
+  min-width: 40vw;
+  max-height: 60vw;
+  min-height: 50vw;
+}
+
+.gameImgContainer {
+}
+
+.gameImg {
+  width: 30vw;
+  max-height: 50vw;
+}
+
+.gameTitle {
+  text-align: center;
+  color: rgba(0, 0, 0, 0.582);
+}
+
+.right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+  height: 100%;
+  max-width: 48vw;
+}
+
+.gameInfo {
+  overflow: hidden;
+  height: 100%;
   display: flex;
   flex: 1;
+}
+
+.infoList {
+  color: rgba(216, 243, 223, 0.747);
+  max-width: 40vw;
+  min-width: 0; /* allow the flex item to shrink below content size */
+  overflow-wrap: anywhere; /* break long words/URLs when needed */
+  font-size: 1.5rem;
+}
+
+.infoList a {
+  color: inherit;
 }
