@@ -1,7 +1,11 @@
-game managment app database
-1 table for games (id, name, dev_ids genres, release_date)
-1 table for developers (id, name, game_ids)
-1 table for genres (id, name, game_ids)
-
+ios liquid glass rounded corner containers
+bold striking cgi background
+overall minimalistic clean vibe
+3 pages: 
+dashboard: overview of stock e.g total stock, uniqe games, instock, out of stock, low stock ect
+games: shows all games by default with dropdown for categories
+(can click on a game and it opens in  minimalistic popup)
+drop down for sort by
+about: simple page with some details about site and why it exists
 
 

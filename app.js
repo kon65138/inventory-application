@@ -3,7 +3,7 @@ const express = require('express');
 const path = require('node:path');
 const indexRouter = require('./routes/indexRouter.js');
 const categoryRouter = require('./routes/categoryRouter.js');
-const gameRouter = require('./routes/gameRouter.js');
+const gameRouter = require('./routes/gamesRouter.js');
 const assetsPath = path.join(__dirname, 'public');
 
 const PORT = 3000;

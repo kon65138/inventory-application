@@ -1,3 +1,62 @@
 * {
   box-sizing: border-box;
+  font-family: 'DM Sans', sans-serif;
+}
+
+body {
+  background-image: url('/imgs/brotherhood-studio-_7lr3Fs9QHU-unsplash.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed; /* parallax-like effect on scroll */
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.1); /* white tint, low opacity */
+  backdrop-filter: blur(12px); /* the frosted glass blur */
+  -webkit-backdrop-filter: blur(12px); /* Safari support */
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.navBar {
+  position: sticky;
+  top: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  border-radius: 20px;
+  padding: 0.2rem;
+  margin: 0;
+}
+
+#nav-menu {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  margin: 0.5rem 0.15rem 0.5rem 0.15rem;
+}
+
+#nav-menu a {
+  text-decoration: none;
+  color: rgb(255, 255, 255);
+  font-weight: bold;
+  padding: 0.5rem;
+  border-radius: 20px;
+}
+
+#nav-menu a[aria-current='page'] {
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(14px);
+}
+
+#nav-menu a:hover {
+  background: rgba(0, 0, 0, 0.137);
+  backdrop-filter: blur(14px);
 }

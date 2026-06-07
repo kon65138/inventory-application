@@ -1,0 +1,7 @@
+<nav class="navBar glass" aria-label="Main navigation">
+  <ul id="nav-menu" role="list">
+    <li><a href="/" <%= currentPage === 'dashboard' ? 'aria-current=page' : '' %>>Dashboard</a></li>
+    <li><a href="/games" <%= currentPage === 'games' ? 'aria-current=page' : '' %>>Games</a></li>
+    <li><a href="/about" <%= currentPage === 'about' ? 'aria-current=page' : '' %>>About</a></li>
+  </ul>
+</nav>
