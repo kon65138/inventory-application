@@ -9,12 +9,54 @@
   </head>
   <body>
     <%- include('navBar', {currentPage: currentPage}) %>
-    <div class="dashboard">
-      <div class="totalGames"></div>
-      <div class="uniqueGames"></div>
-      <div class="lowStock"></div>
-      <div class="outOfStock"></div>
+    <i><h1 id="title">Dashboard</h1></i>
+    
+    <div class="dashboard glass">
+      <div class="totalStock glass" >
+        <div class="statName">Total Stock</div>
+        <div class="statDisplay">
+          <div class="icon"></div>
+          <div class="number"data-count="<%= totalStock.sum %>">0</div>
+        </div>
+      </div>
+      <div class="uniqueGames glass" >
+        <div class="statName">Unique Games</div>
+        <div class="statDisplay">
+          <div class="icon"></div>
+          <div class="number"data-count="<%= games.length %>">0</div>
+        </div>
+      </div>
+      <div class="lowStock glass">
+        <div class="statName">Low Stock</div>
+        <div class="statDisplay">
+          <div class="icon"></div>
+          <div class="number"data-count="<%= lowStock.length %>">0</div>
+        </div>
+      </div>
+      <div class="outOfStock glass" >
+        <div class="statName">Out Of Stock</div>
+        <div class="statDisplay">
+          <div class="icon"></div>
+          <div class="number"data-count="<%= outOfStock.length %>">0</div>
+        </div>
+      </div>
 
     </div>
+    <script >
+  function countUp(el, target, duration = 1200) {
+    const start = performance.now();
+    const update = (now) => {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+      el.textContent = Math.floor(eased * target);
+      if (progress < 1) requestAnimationFrame(update);
+    };
+    requestAnimationFrame(update);
+  }
+
+  document.querySelectorAll('[data-count]').forEach(el => {
+    countUp(el, parseInt(el.dataset.count));
+  });
+</script>
   </body>
 </html>

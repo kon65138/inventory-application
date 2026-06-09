@@ -1,0 +1,43 @@
+#title {
+  font-weight: 100;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  width: 80vw;
+  font-size: 4rem;
+  margin-bottom: 0;
+  padding-left: 1rem;
+}
+
+.dashboard {
+  display: flex;
+  border-radius: 20px;
+  width: 80vw;
+  height: 30vw;
+  padding: 1rem;
+  gap: 1rem;
+}
+
+.totalStock,
+.outOfStock,
+.lowStock,
+.uniqueGames {
+  display: flex;
+  justify-content: center;
+  align-items: left;
+  border-radius: 20px;
+  flex: 1;
+  height: fit-content;
+  padding: 1rem;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.statName {
+  color: rgba(0, 0, 0, 0.356);
+  font-weight: bold;
+}
+
+.number {
+  font-size: 2rem;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  color: rgb(2, 61, 85);
+}

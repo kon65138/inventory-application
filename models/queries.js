@@ -12,7 +12,27 @@ async function getGameInfo(id) {
   return rows[0];
 }
 
+async function getTotalStock() {
+  const { rows } = await pool.query('SELECT SUM(quantity) FROM games;');
+  return rows[0];
+}
+
+async function getLowStock() {
+  const { rows } = await pool.query(
+    'SELECT id FROM games WHERE quantity < 30;',
+  );
+  return rows;
+}
+
+async function getOutOfStock() {
+  const { rows } = await pool.query('SELECT id FROM games WHERE quantity = 0;');
+  return rows;
+}
+
 module.exports = {
   getAllGames,
   getGameInfo,
+  getTotalStock,
+  getLowStock,
+  getOutOfStock,
 };
