@@ -4,10 +4,17 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="/css/style.css" rel="stylesheet" />
-    <link rel="stylesheet" href="/css/homepage.css" />
+    <link rel="stylesheet" href="/css/dashboard.css" />
     <title>100 XBOX360 games</title>
   </head>
   <body>
     <%- include('navBar', {currentPage: currentPage}) %>
+    <div class="dashboard">
+      <div class="totalGames"></div>
+      <div class="uniqueGames"></div>
+      <div class="lowStock"></div>
+      <div class="outOfStock"></div>
+
+    </div>
   </body>
 </html>

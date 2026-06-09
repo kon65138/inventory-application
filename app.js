@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const path = require('node:path');
-const indexRouter = require('./routes/indexRouter.js');
+const dashboardRouter = require('./routes/dashboardRouter.js');
 const categoryRouter = require('./routes/categoryRouter.js');
 const gameRouter = require('./routes/gamesRouter.js');
 const assetsPath = path.join(__dirname, 'public');
@@ -16,7 +16,7 @@ app.set('view engine', 'ejs');
 app.use(express.static(assetsPath));
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/', indexRouter);
+app.use('/', dashboardRouter);
 app.use('/category', categoryRouter);
 app.use('/game', gameRouter);
 

@@ -3,7 +3,7 @@ const db = require('../models/queries');
 async function get(req, res) {
   try {
     const games = await db.getAllGames();
-    res.render('index', {
+    res.render('dashboard', {
       title: '100 XBOX360 GAMES',
       games: games,
       currentPage: 'dashboard',

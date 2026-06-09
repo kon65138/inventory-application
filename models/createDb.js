@@ -20,7 +20,8 @@ CREATE TABLE IF NOT EXISTS games (
   name VARCHAR(255),
   release_date VARCHAR(255),
   game_link VARCHAR(255),
-  img_src VARCHAR(255)
+  img_src VARCHAR(255),
+  quantity INTEGER
 );
 
 CREATE TABLE IF NOT EXISTS games_developers (
@@ -222,14 +223,22 @@ async function main() {
     const gameRows = [];
     for (let i = 0; i < selectedGames.length; i++) {
       const game = selectedGames[i];
+      console.log('getting wikipedia imgs');
       const imgSrc = await getWikipediaImage(game.GameLink);
+      const quantity = Math.floor(Math.random() * 300);
       await sleep(150);
-      gameRows.push([game.Game, game.Year, game.GameLink, imgSrc]);
+      gameRows.push([
+        game.Game,
+        game.Year,
+        game.GameLink,
+        imgSrc,
+        Number(quantity),
+      ]);
     }
 
     const gameResult = await client.query(
       format(
-        `INSERT INTO games (name, release_date, game_link, img_src) VALUES %L RETURNING id, name`,
+        `INSERT INTO games (name, release_date, game_link, img_src, quantity) VALUES %L RETURNING id, name`,
         gameRows,
       ),
     );
