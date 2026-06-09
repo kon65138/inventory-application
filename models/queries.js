@@ -19,13 +19,26 @@ async function getTotalStock() {
 
 async function getLowStock() {
   const { rows } = await pool.query(
-    'SELECT id FROM games WHERE quantity < 30;',
+    'SELECT id, name, quantity FROM games WHERE quantity < 30;',
   );
   return rows;
 }
 
 async function getOutOfStock() {
-  const { rows } = await pool.query('SELECT id FROM games WHERE quantity = 0;');
+  const { rows } = await pool.query(
+    'SELECT id, name, quantity FROM games WHERE quantity = 0;',
+  );
+  return rows;
+}
+
+async function getGenreDistribution() {
+  const { rows } = await pool.query(`
+    SELECT ge.name, COUNT(DISTINCT gg.game_id) AS game_count
+    FROM genres ge
+    JOIN games_genres gg ON ge.id = gg.genre_id
+    GROUP BY ge.name
+    ORDER BY game_count DESC;
+  `);
   return rows;
 }
 
@@ -35,4 +48,5 @@ module.exports = {
   getTotalStock,
   getLowStock,
   getOutOfStock,
+  getGenreDistribution,
 };

@@ -5,15 +5,84 @@
   font-size: 4rem;
   margin-bottom: 0;
   padding-left: 1rem;
+  color: rgb(2, 24, 66);
 }
 
 .dashboard {
   display: flex;
+  flex-direction: column;
   border-radius: 20px;
   width: 80vw;
-  height: 30vw;
+  height: fit-content;
   padding: 1rem;
   gap: 1rem;
+}
+
+.statsContainer {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+}
+
+.tables {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+}
+
+.chartWrapper {
+  position: relative;
+  flex: 0 0 1;
+  height: fit-content;
+  border-radius: 20px;
+  padding: 1rem;
+}
+
+#lowStockTable {
+  flex: 1;
+  border: none;
+  border-spacing: 0;
+  border-radius: 20px;
+}
+
+th {
+  color: rgba(0, 0, 0, 0.466);
+}
+
+td {
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  color: rgb(2, 61, 85);
+}
+
+td,
+th {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0.4rem;
+}
+
+/*
+Source - https://stackoverflow.com/a/635863
+Posted by vamin, modified by community. See post 'Timeline' for change history
+Retrieved 2026-06-09, License - CC BY-SA 4.0
+*/
+table tr:first-child th:first-child {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-top-left-radius: 20px;
+}
+
+table tr:first-child th:last-child {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-top-right-radius: 20px;
+}
+
+table tr:last-child td:first-child {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-bottom-left-radius: 20px;
+}
+
+table tr:last-child td:last-child {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-bottom-right-radius: 20px;
 }
 
 .totalStock,
@@ -32,7 +101,7 @@
 }
 
 .statName {
-  color: rgba(0, 0, 0, 0.356);
+  color: rgba(0, 0, 0, 0.466);
   font-weight: bold;
 }
 

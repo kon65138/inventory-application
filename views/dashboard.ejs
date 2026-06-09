@@ -12,7 +12,8 @@
     <i><h1 id="title">Dashboard</h1></i>
     
     <div class="dashboard glass">
-      <div class="totalStock glass" >
+      <div class="statsContainer">
+        <div class="totalStock glass" >
         <div class="statName">Total Stock</div>
         <div class="statDisplay">
           <div class="icon"></div>
@@ -40,8 +41,50 @@
           <div class="number"data-count="<%= outOfStock.length %>">0</div>
         </div>
       </div>
-
+      </div>
+      <div class="tables">
+        <div class="chartWrapper glass">
+          <canvas id="genreChart"></canvas>
+        </div>
+        
+        <table id="lowStockTable" class="glass">
+          <tr>
+            <th>id</th>
+            <th>name</th>
+            <th>quantity</th>
+          </tr>
+          <% lowStock.forEach(row => {%>
+            <tr>
+              <td><%= row.id %></td>
+              <td><%= row.name %></td>
+              <td><%= row.quantity %></td>
+            </tr>
+            <% }) %>
+        </table>
+      </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const ctx = document.getElementById('genreChart');
+  new Chart(ctx, {
+    type: 'doughnut', // or 'pie'
+    data: {
+      labels: <%- JSON.stringify(genresDistribution.map(g => g.name)) %>,
+      datasets: [{
+        data: <%- JSON.stringify(genresDistribution.map(g => g.game_count)) %>,
+        borderWidth: 0,
+        hoverOffset: 8,
+      }]
+    },
+    options: {
+      maintainAspectRatio: false,
+      plugins: {
+        title: {display: true, text: 'Genre distribution'},
+        legend: { display: false}
+      }
+    }
+  });
+</script>
     <script >
   function countUp(el, target, duration = 1200) {
     const start = performance.now();
