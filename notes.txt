@@ -9,3 +9,14 @@ drop down for sort by
 about: simple page with some details about site and why it exists
 
 
+/* More matte / frosted */
+backdrop-filter: blur(20px) saturate(80%);
+background: rgba(255, 255, 255, 0.08);
+
+/* Darker tinted glass */
+background: rgba(0, 0, 0, 0.25);
+backdrop-filter: blur(14px);
+
+/* Colored tint (e.g. blue-ish) */
+background: rgba(100, 149, 237, 0.15);
+backdrop-filter: blur(12px);

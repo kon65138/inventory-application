@@ -42,6 +42,32 @@ async function getGenreDistribution() {
   return rows;
 }
 
+async function getAllData() {
+  const { rows } =
+    await pool.query(`SELECT g.id, g.name, g.release_date, g.quantity, g.game_link, g.img_src,
+       STRING_AGG(DISTINCT ge.name, ', ' ORDER BY ge.name) AS genres,
+       STRING_AGG(DISTINCT d.name, ', ' ORDER BY d.name) AS developers
+FROM games g
+LEFT JOIN games_genres gg ON gg.game_id = g.id
+LEFT JOIN genres ge ON ge.id = gg.genre_id
+LEFT JOIN games_developers gd ON gd.game_id = g.id
+LEFT JOIN developers d ON d.id = gd.developer_id
+GROUP BY g.id
+ORDER BY g.id;
+`);
+  return rows;
+}
+
+async function getAllGenres() {
+  const { rows } = await pool.query('SELECT * FROM genres;');
+  return rows;
+}
+
+async function getAllDevelopers() {
+  const { rows } = await pool.query('SELECT * FROM developers;');
+  return rows;
+}
+
 module.exports = {
   getAllGames,
   getGameInfo,
@@ -49,4 +75,7 @@ module.exports = {
   getLowStock,
   getOutOfStock,
   getGenreDistribution,
+  getAllData,
+  getAllGenres,
+  getAllDevelopers,
 };
