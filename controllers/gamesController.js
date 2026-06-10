@@ -1,10 +1,6 @@
-const db = require('../models/queries');
-
 async function get(req, res) {
-  const { id } = req.params;
   try {
-    const game = await db.getGameInfo(Number(id));
-    res.render('game', { game: game });
+    res.render('games', { title: '100 XBOX360 games', currentPage: 'games' });
   } catch (err) {
     console.error(err);
     res.status(500).send('Database error');

@@ -24,67 +24,6 @@
   width: 100%;
 }
 
-.tables {
-  display: flex;
-  gap: 1rem;
-  width: 100%;
-}
-
-.chartWrapper {
-  position: relative;
-  flex: 0 0 1;
-  height: fit-content;
-  border-radius: 20px;
-  padding: 1rem;
-}
-
-#lowStockTable {
-  flex: 1;
-  border: none;
-  border-spacing: 0;
-  border-radius: 20px;
-}
-
-th {
-  color: rgba(0, 0, 0, 0.466);
-}
-
-td {
-  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-  color: rgb(2, 61, 85);
-}
-
-td,
-th {
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 0.4rem;
-}
-
-/*
-Source - https://stackoverflow.com/a/635863
-Posted by vamin, modified by community. See post 'Timeline' for change history
-Retrieved 2026-06-09, License - CC BY-SA 4.0
-*/
-table tr:first-child th:first-child {
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-top-left-radius: 20px;
-}
-
-table tr:first-child th:last-child {
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-top-right-radius: 20px;
-}
-
-table tr:last-child td:first-child {
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-bottom-left-radius: 20px;
-}
-
-table tr:last-child td:last-child {
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-bottom-right-radius: 20px;
-}
-
 .totalStock,
 .outOfStock,
 .lowStock,
@@ -109,4 +48,105 @@ table tr:last-child td:last-child {
   font-size: 2rem;
   font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
   color: rgb(2, 61, 85);
+}
+
+.tables {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+}
+
+.chartWrapper {
+  position: relative;
+  flex: 0 0 1;
+  height: fit-content;
+  border-radius: 20px;
+  padding: 1rem;
+}
+
+.tableWrapper {
+  display: flex;
+  flex: 1;
+  height: 100%;
+}
+
+.tableCaption {
+  background: rgba(255, 255, 255, 0.1); /* white tint, low opacity */
+  backdrop-filter: blur(12px); /* the frosted glass blur */
+  -webkit-backdrop-filter: blur(12px); /* Safari support */
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  font-size: 0.75rem;
+  padding: 0.2rem;
+  color: rgba(0, 0, 0, 0.466);
+  font-weight: bold;
+  text-align: center;
+}
+
+#lowStockTable {
+  flex: 1;
+  border: none;
+  border-spacing: 0;
+  border-radius: 20px;
+}
+
+th {
+  color: rgba(0, 0, 0, 0.466);
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+td {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  color: rgb(2, 61, 85);
+}
+
+td,
+th {
+  background: rgba(255, 255, 255, 0.1); /* white tint, low opacity */
+  backdrop-filter: blur(12px); /* the frosted glass blur */
+  -webkit-backdrop-filter: blur(12px); /* Safari support */
+  padding: 0.4rem;
+}
+
+/*
+Source - https://stackoverflow.com/a/635863
+Posted by vamin, modified by community. See post 'Timeline' for change history
+Retrieved 2026-06-09, License - CC BY-SA 4.0
+*/
+table tr td:first-child {
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+table tr:first-child th:nth-child(2) {
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+table tr:first-child th:first-child {
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+table tr:first-child th:last-child {
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+table tr:last-child td:first-child {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+  border-bottom-left-radius: 20px;
+}
+
+table tr:last-child td:last-child {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  border-bottom-right-radius: 20px;
 }

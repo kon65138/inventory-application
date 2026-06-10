@@ -42,18 +42,18 @@
         </div>
       </div>
       </div>
-      <div class="tables">
+      <div class="tables" title="Low Stock Games">
         <div class="chartWrapper glass">
           <canvas id="genreChart"></canvas>
         </div>
-        
-        <table id="lowStockTable" class="glass">
-          <tr>
-            <th>id</th>
-            <th>name</th>
-            <th>quantity</th>
-          </tr>
-          <% lowStock.forEach(row => {%>
+          <table id="lowStockTable" >
+            <caption class="tableCaption">Low Stock Games</caption>
+            <tr>
+              <th>id</th>
+              <th>name</th>
+              <th>quantity</th>
+            </tr>
+            <% lowStock.forEach(row => {%>
             <tr>
               <td><%= row.id %></td>
               <td><%= row.name %></td>
@@ -61,6 +61,7 @@
             </tr>
             <% }) %>
         </table>
+        
       </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -79,7 +80,7 @@
     options: {
       maintainAspectRatio: false,
       plugins: {
-        title: {display: true, text: 'Genre distribution'},
+        title: {display: true, text: 'Genre distribution of unique games'},
         legend: { display: false}
       }
     }

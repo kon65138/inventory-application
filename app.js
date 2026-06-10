@@ -2,8 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const path = require('node:path');
 const dashboardRouter = require('./routes/dashboardRouter.js');
-const categoryRouter = require('./routes/categoryRouter.js');
-const gameRouter = require('./routes/gamesRouter.js');
+const gamesRouter = require('./routes/gamesRouter.js');
+const gameRouter = require('./routes/gameRouter.js');
 const assetsPath = path.join(__dirname, 'public');
 
 const PORT = 3000;
@@ -17,8 +17,7 @@ app.use(express.static(assetsPath));
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/', dashboardRouter);
-app.use('/category', categoryRouter);
-app.use('/game', gameRouter);
+app.use('/games', gamesRouter);
 
 app.use((err, req, res, next) => {
   console.error(err);
