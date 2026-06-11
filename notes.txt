@@ -7,6 +7,7 @@ games: shows all games by default with dropdown for categories
 (can click on a game and it opens in  minimalistic popup)
 drop down for sort by
 about: simple page with some details about site and why it exists
+make it 1000 instead of 100 lol
 
 
 /* More matte / frosted */

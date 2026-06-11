@@ -15,6 +15,16 @@ body {
   flex-direction: column;
 }
 
+#title {
+  font-weight: 100;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  width: 80vw;
+  font-size: 4rem;
+  margin-bottom: 0;
+  padding-left: 1rem;
+  color: rgb(2, 24, 66);
+}
+
 .glass {
   background: rgba(255, 255, 255, 0.1); /* white tint, low opacity */
   backdrop-filter: blur(12px); /* the frosted glass blur */

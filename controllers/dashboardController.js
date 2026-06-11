@@ -8,7 +8,7 @@ async function get(req, res) {
     const outOfStock = await db.getOutOfStock();
     const genresDistribution = await db.getGenreDistribution();
     res.render('dashboard', {
-      title: '100 XBOX360 GAMES',
+      title: 'Dashboard',
       games: games,
       totalStock: totalStock,
       lowStock: lowStock,

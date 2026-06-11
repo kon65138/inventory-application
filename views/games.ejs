@@ -7,12 +7,14 @@
     <link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
 <link href="/css/style.css" rel="stylesheet" />
+
+
     <link href="/css/games.css" rel="stylesheet" />
-    <title>100 XBOX360 games</title>
+    <title>100 XBOX360 GAMES</title>
   </head>
   <body>
     <%- include('navBar', {currentPage: currentPage}) %>
-    <h1 id="title">Games</h1>
+    <i><h1 id="title"><%= title %></h1></i>
     <div class="games glass">
       <search>
         <input id="titleSearch" class="glass" type="text" placeholder="search by title">
@@ -31,7 +33,8 @@
         <% }) %>
         </select>
       </div>
-      <table id="resultsTable">
+      <div class="tableWrapper">
+        <table id="resultsTable">
         <caption class="tableCaption"></caption>
         <tr>
             <th>Id</th>
@@ -43,22 +46,83 @@
             <th>Quantity</th>
           </tr>
         <% allData.forEach(row => { %>
-          <tr>
+          <tr data-id="<%=row.id%>">
             <td><%= row.id %></td>
             <td><%=row.name%></td>
             <td><%=row.genres%></td>
             <td><%=row.developers%></td>
             <td><%=row.release_date%></td>
-            <td><a href="<%=row.game_link %>">wiki</a></td>
+            <td><a href="<%=row.game_link %>" target="_blank">wiki</a></td>
             <td><%= row.quantity %></td>
           </tr>
           <% }) %>
 
       </table>
+      </div>
+      
     </div>
     <script>
   new TomSelect('#genreFilter', { maxOptions: null, refreshThrottle: 0, dropdownParent: 'body' });
   new TomSelect('#developerFilter', { maxOptions: null, refreshThrottle: 0, dropdownParent: 'body' });
 </script>
+<script type="module">
+  import Fuse from '/libs/fuse.mjs';
+
+  const data = <%- JSON.stringify(allData) %>;
+  const fuse = new Fuse(data, { keys: ['name'], threshold: 0.3 });
+
+  const div = document.createElement('div');
+      div.textContent = 'no results'
+      div.id = 'noResults'
+      div.classList = 'glass'
+
+  function filterTable() {
+    const query = document.getElementById('titleSearch').value.trim();
+    const genre = document.getElementById('genreFilter').value;
+    const developer = document.getElementById('developerFilter').value;
+    const rows = document.querySelectorAll('#resultsTable tr:not(:first-child)');
+    const tableWrapper = document.querySelector('.tableWrapper');
+
+    const fuseIds = query
+      ? new Set(fuse.search(query).map(r => String(r.item.id)))
+      : null;
+
+    rows.forEach(row => {
+      const id = row.dataset.id;
+      const genres = row.cells[2].textContent;
+      const developers = row.cells[3].textContent;
+
+      const matchesTitle = !fuseIds || fuseIds.has(id);
+      const matchesGenre = !genre || genres.includes(genre);
+      const matchesDev = !developer || developers.includes(developer);
+
+      row.style.display = matchesTitle && matchesGenre && matchesDev ? '' : 'none';
+    });
+
+
+
+    // update last-visible class for border-radius
+    rows.forEach(row => row.classList.remove('last-visible'));
+    const visibleRows = [...rows].filter(row => row.style.display !== 'none');
+    if (visibleRows.length) visibleRows.at(-1).classList.add('last-visible');
+    if (visibleRows == false) {
+      tableWrapper.appendChild(div);
+    } else if (tableWrapper.childElementCount > 1) {
+      console.log(tableWrapper.childNodes)
+      tableWrapper.removeChild(div);
+    }
+    
+
+  }
+
+  document.getElementById('titleSearch').addEventListener('input', filterTable);
+
+  // Tom Select fires 'change' on the underlying <select>
+  document.getElementById('genreFilter').addEventListener('change', filterTable);
+  document.getElementById('developerFilter').addEventListener('change', filterTable);
+  filterTable()
+</script>
+
+
   </body>
 </html>

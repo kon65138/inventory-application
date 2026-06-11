@@ -6,7 +6,7 @@ async function get(req, res) {
     const allGenres = await db.getAllGenres();
     const allDevelopers = await db.getAllDevelopers();
     res.render('games', {
-      title: '100 XBOX360 games',
+      title: 'Games',
       currentPage: 'games',
       allData: allData,
       allGenres: allGenres,

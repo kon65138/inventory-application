@@ -13,6 +13,11 @@ const app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+app.use(
+  '/libs',
+  express.static(path.join(__dirname, 'node_modules/fuse.js/dist')),
+);
+
 app.use(express.static(assetsPath));
 app.use(express.urlencoded({ extended: true }));
 

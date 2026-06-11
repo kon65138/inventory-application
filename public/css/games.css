@@ -35,11 +35,16 @@
   border-radius: 20px;
 }
 
-.ts-wrapper.single.input-active .ts-control {
+.ts-wrapper.single.input-active.dropdown-active .ts-control {
   backdrop-filter: blur(12px) saturate(80%);
   background: rgba(255, 255, 255, 0.08);
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
+}
+
+.ts-wrapper.single.input-active .ts-control {
+  backdrop-filter: blur(12px) saturate(80%);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .ts-dropdown {
@@ -86,11 +91,21 @@
   scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
 }
 
+.tableWrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
 #resultsTable {
   flex: 1;
   border: none;
   border-spacing: 0;
   border-radius: 20px;
+}
+
+#resultsTable a {
+  color: rgb(2, 61, 85);
 }
 
 th {
@@ -123,7 +138,7 @@ table tr td:first-child {
   border-left: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-table tr:first-child th:nth-child(2) {
+table tr:first-child th:not(:first-child:last-child) {
   border-top: 1px solid rgba(255, 255, 255, 0.2);
   border-right: 1px solid rgba(255, 255, 255, 0.2);
 }
@@ -141,14 +156,19 @@ table tr:first-child th:last-child {
   border-top-right-radius: 20px;
 }
 
-table tr:last-child td:first-child {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  border-left: 1px solid rgba(255, 255, 255, 0.2);
+tr.last-visible td:first-child {
   border-bottom-left-radius: 20px;
 }
 
-table tr:last-child td:last-child {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  border-right: 1px solid rgba(255, 255, 255, 0.2);
+tr.last-visible td:last-child {
+  border-bottom-right-radius: 20px;
+}
+
+#noResults {
+  flex: 1;
+  text-align: center;
+  color: rgb(2, 61, 85);
+  padding: 0.5rem;
+  border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
 }
