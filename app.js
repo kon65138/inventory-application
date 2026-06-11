@@ -3,7 +3,7 @@ const express = require('express');
 const path = require('node:path');
 const dashboardRouter = require('./routes/dashboardRouter.js');
 const gamesRouter = require('./routes/gamesRouter.js');
-const gameRouter = require('./routes/gameRouter.js');
+const aboutRouter = require('./routes/aboutRouter.js');
 const assetsPath = path.join(__dirname, 'public');
 
 const PORT = 3000;
@@ -23,6 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/', dashboardRouter);
 app.use('/games', gamesRouter);
+app.use('/about', aboutRouter);
 
 app.use((err, req, res, next) => {
   console.error(err);

@@ -7,7 +7,15 @@ games: shows all games by default with dropdown for categories
 (can click on a game and it opens in  minimalistic popup)
 drop down for sort by
 about: simple page with some details about site and why it exists
-make it 1000 instead of 100 lol
+
+
+todo:
+make it 1000games instead of 100,
+make about page,
+make games table scrollable instead of page (page scrolling with blur = bad preformance),
+make sure inputs are sanitized,
+add some more cool animations
+
 
 
 /* More matte / frosted */
