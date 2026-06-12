@@ -10,10 +10,11 @@ about: simple page with some details about site and why it exists
 
 
 todo:
-make it 1000games instead of 100,
+remove img src and make it 1000games instead of 100,
 make about page,
 make games table scrollable instead of page (page scrolling with blur = bad preformance),
 make sure inputs are sanitized,
+add delete and edit functions (with password),
 add some more cool animations
 
 

@@ -28,30 +28,36 @@
 
 .ts-control,
 .full .ts-control {
-  backdrop-filter: blur(12px) saturate(80%);
+  will-change: backdrop-filter;
+  backdrop-filter: blur(8px) saturate(80%);
   background: rgba(255, 255, 255, 0.08);
-  -webkit-backdrop-filter: blur(12px); /* Safari support */
+  -webkit-backdrop-filter: blur(8px); /* Safari support */
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 20px;
 }
 
 .ts-wrapper.single.input-active.dropdown-active .ts-control {
-  backdrop-filter: blur(12px) saturate(80%);
+  will-change: backdrop-filter;
+  backdrop-filter: blur(8px) saturate(80%);
+  -webkit-backdrop-filter: blur(8px); /* Safari support */
   background: rgba(255, 255, 255, 0.08);
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
 
 .ts-wrapper.single.input-active .ts-control {
-  backdrop-filter: blur(12px) saturate(80%);
+  will-change: backdrop-filter;
+  backdrop-filter: blur(8px) saturate(80%);
+  -webkit-backdrop-filter: blur(8px); /* Safari support */
   background: rgba(255, 255, 255, 0.08);
 }
 
 .ts-dropdown {
+  will-change: backdrop-filter;
   margin: 0;
-  backdrop-filter: blur(20px) saturate(80%);
+  backdrop-filter: blur(8px) saturate(80%);
   background: rgba(255, 255, 255, 0.08);
-  -webkit-backdrop-filter: blur(12px); /* Safari support */
+  -webkit-backdrop-filter: blur(8px); /* Safari support */
   border: 1px solid rgba(255, 255, 255, 0.2);
   z-index: 5;
   border-bottom-left-radius: 20px;
@@ -60,7 +66,7 @@
 }
 
 .ts-dropdown .active {
-  backdrop-filter: blur(12px) saturate(80%);
+  will-change: backdrop-filter;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
@@ -104,8 +110,18 @@
   border-radius: 20px;
 }
 
+#tableBodyWrapper {
+  max-height: 60vh;
+  overflow: scroll;
+}
+
 #resultsTable a {
   color: rgb(2, 61, 85);
+}
+
+tr th:first-child,
+tr td:first-child {
+  display: none;
 }
 
 th {
@@ -123,9 +139,10 @@ td {
 
 td,
 th {
+  will-change: backdrop-filter;
   background: rgba(255, 255, 255, 0.1); /* white tint, low opacity */
-  backdrop-filter: blur(12px); /* the frosted glass blur */
-  -webkit-backdrop-filter: blur(12px); /* Safari support */
+  backdrop-filter: blur(8px); /* the frosted glass blur */
+  -webkit-backdrop-filter: blur(8px); /* Safari support */
   padding: 0.4rem;
 }
 
@@ -134,7 +151,7 @@ Source - https://stackoverflow.com/a/635863
 Posted by vamin, modified by community. See post 'Timeline' for change history
 Retrieved 2026-06-09, License - CC BY-SA 4.0
 */
-table tr td:first-child {
+table tr td:nth-child(2) {
   border-left: 1px solid rgba(255, 255, 255, 0.2);
 }
 
@@ -143,7 +160,7 @@ table tr:first-child th:not(:first-child:last-child) {
   border-right: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-table tr:first-child th:first-child {
+table tr:first-child th:nth-child(2) {
   border-top: 1px solid rgba(255, 255, 255, 0.2);
   border-left: 1px solid rgba(255, 255, 255, 0.2);
   border-right: 1px solid rgba(255, 255, 255, 0.2);
@@ -156,7 +173,7 @@ table tr:first-child th:last-child {
   border-top-right-radius: 20px;
 }
 
-tr.last-visible td:first-child {
+tr.last-visible td:nth-child(2) {
   border-bottom-left-radius: 20px;
 }
 

@@ -27,8 +27,8 @@ body {
 
 .glass {
   background: rgba(255, 255, 255, 0.1); /* white tint, low opacity */
-  backdrop-filter: blur(12px); /* the frosted glass blur */
-  -webkit-backdrop-filter: blur(12px); /* Safari support */
+  backdrop-filter: blur(8px); /* the frosted glass blur */
+  -webkit-backdrop-filter: blur(8px); /* Safari support */
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
