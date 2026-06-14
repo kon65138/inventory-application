@@ -61,7 +61,7 @@
 }
 
 .tableCaption {
-  background: rgba(255, 255, 255, 0.1); /* white tint, low opacity */
+  background: rgba(255, 255, 255, 0.377);
   backdrop-filter: blur(8px); /* the frosted glass blur */
   -webkit-backdrop-filter: blur(8px); /* Safari support */
   border-top: 1px solid rgba(255, 255, 255, 0.2);
@@ -93,12 +93,15 @@ td {
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
   border-right: 1px solid rgba(255, 255, 255, 0.2);
   font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-  color: rgb(2, 61, 85);
+  color: rgba(2, 61, 85, 0.808);
+  background: rgba(255, 255, 255, 0.1); /* white tint, low opacity */
+  backdrop-filter: blur(8px); /* the frosted glass blur */
+  -webkit-backdrop-filter: blur(8px); /* Safari support */
+  padding: 0.4rem;
 }
 
-td,
 th {
-  background: rgba(255, 255, 255, 0.1); /* white tint, low opacity */
+  background: rgba(255, 255, 255, 0.377);
   backdrop-filter: blur(8px); /* the frosted glass blur */
   -webkit-backdrop-filter: blur(8px); /* Safari support */
   padding: 0.4rem;

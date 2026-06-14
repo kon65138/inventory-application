@@ -71,24 +71,30 @@
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.ts-dropdown-content::-webkit-scrollbar {
+.ts-dropdown-content::-webkit-scrollbar,
+tbody::-webkit-scrollbar {
   width: 6px;
 }
 
-.ts-dropdown-content::-webkit-scrollbar-track {
+.ts-dropdown-content::-webkit-scrollbar-track,
+tbody::-webkit-scrollbar-track {
   background: transparent;
+  margin: 1rem 0 1rem 0;
 }
 
-.ts-dropdown-content::-webkit-scrollbar-thumb {
+.ts-dropdown-content::-webkit-scrollbar-thumb,
+tbody::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.3);
   border-radius: 10px;
 }
 
-.ts-dropdown-content::-webkit-scrollbar-thumb:hover {
+.ts-dropdown-content::-webkit-scrollbar-thumb:hover,
+tbody::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.6);
 }
 
-.ts-dropdown-content::-webkit-scrollbar-button {
+.ts-dropdown-content::-webkit-scrollbar-button,
+tbody::-webkit-scrollbar-button {
   display: none;
 }
 
@@ -98,9 +104,13 @@
 }
 
 .tableWrapper {
+  will-change: backdrop-filter;
   display: flex;
   flex-direction: column;
   flex: 1;
+  max-height: 60vh;
+  overflow: auto;
+  border-radius: 20px;
 }
 
 #resultsTable {
@@ -110,18 +120,43 @@
   border-radius: 20px;
 }
 
-#tableBodyWrapper {
-  max-height: 60vh;
-  overflow: scroll;
+tbody {
+  border-radius: 20px;
+  display: block;
+  overflow: hidden;
+  width: 100%;
+}
+
+.tableWrapper .os-scrollbar-vertical {
+  padding-top: 2.3rem;
+  padding-bottom: 1rem;
+}
+
+thead,
+tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+tbody tr:first-child {
+  position: fixed;
+  top: 0vh;
+  z-index: 3;
+  background: rgba(255, 255, 255, 0.377);
 }
 
 #resultsTable a {
-  color: rgb(2, 61, 85);
+  color: rgba(2, 61, 85, 0.808);
 }
 
 tr th:first-child,
 tr td:first-child {
   display: none;
+}
+
+.first-visible {
+  margin-top: 2rem;
 }
 
 th {
@@ -134,16 +169,17 @@ td {
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
   border-right: 1px solid rgba(255, 255, 255, 0.2);
   font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-  color: rgb(2, 61, 85);
+  color: rgba(2, 61, 85, 0.808);
 }
 
 td,
 th {
-  will-change: backdrop-filter;
-  background: rgba(255, 255, 255, 0.1); /* white tint, low opacity */
-  backdrop-filter: blur(8px); /* the frosted glass blur */
-  -webkit-backdrop-filter: blur(8px); /* Safari support */
   padding: 0.4rem;
+}
+
+table tr td:last-child,
+#resultsTable tr:first-child th:last-child {
+  border-right: none;
 }
 
 /*
@@ -151,40 +187,59 @@ Source - https://stackoverflow.com/a/635863
 Posted by vamin, modified by community. See post 'Timeline' for change history
 Retrieved 2026-06-09, License - CC BY-SA 4.0
 */
-table tr td:nth-child(2) {
-  border-left: 1px solid rgba(255, 255, 255, 0.2);
-}
 
-table tr:first-child th:not(:first-child:last-child) {
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
+table tr:first-child th:not(:first-child) {
   border-right: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 table tr:first-child th:nth-child(2) {
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
-  border-left: 1px solid rgba(255, 255, 255, 0.2);
-  border-right: 1px solid rgba(255, 255, 255, 0.2);
   border-top-left-radius: 20px;
 }
 
 table tr:first-child th:last-child {
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
-  border-right: 1px solid rgba(255, 255, 255, 0.2);
   border-top-right-radius: 20px;
 }
 
 tr.last-visible td:nth-child(2) {
   border-bottom-left-radius: 20px;
+  border-bottom: none;
 }
 
 tr.last-visible td:last-child {
   border-bottom-right-radius: 20px;
+  border-bottom: none;
+}
+
+table tr:nth-child(2) {
+  margin-top: 2rem;
+}
+
+.options {
+  position: absolute;
+  right: 0.5rem;
+  background: none;
+  border: none;
+  color: rgba(2, 61, 85, 0.808);
+  width: fit-content;
+  border-radius: 20px;
+  padding: 0;
+  margin: 0;
+}
+
+.options:hover {
+  background: rgba(0, 0, 0, 0.123);
+}
+
+#resultsTable tr.last-visible td {
+  border-bottom: none;
 }
 
 #noResults {
-  flex: 1;
+  overflow: hidden;
+  margin-top: 2rem;
+  width: 76.5vw;
   text-align: center;
-  color: rgb(2, 61, 85);
+  color: rgba(2, 61, 85, 0.808);
   padding: 0.5rem;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;

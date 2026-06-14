@@ -15,7 +15,8 @@ make about page,
 make games table scrollable instead of page (page scrolling with blur = bad preformance),
 make sure inputs are sanitized,
 add delete and edit functions (with password),
-add some more cool animations
+add some more cool animations,
+fix the missalignment of the dropdowns
 
 
 

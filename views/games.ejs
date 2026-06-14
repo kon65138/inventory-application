@@ -7,7 +7,8 @@
     <link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
 <link href="/css/style.css" rel="stylesheet" />
-
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/overlayscrollbars@2/styles/overlayscrollbars.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2/browser/overlayscrollbars.browser.es6.min.js"></script>
 
     <link href="/css/games.css" rel="stylesheet" />
     <title>100 XBOX360 GAMES</title>
@@ -33,7 +34,7 @@
         <% }) %>
         </select>
       </div>
-      <div class="tableWrapper">
+      <div class="tableWrapper glass" data-overlayscrollbars-initialize>
         <table id="resultsTable">
         <caption class="tableCaption"></caption>
         <tr>
@@ -53,7 +54,7 @@
             <td><%=row.developers%></td>
             <td><%=row.release_date%></td>
             <td><a href="<%=row.game_link %>" target="_blank">wiki</a></td>
-            <td><%= row.quantity %></td>
+            <td><%= row.quantity %> <button class="options" onclick="openOptions(e)"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis-vertical-icon lucide-ellipsis-vertical"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg></button></td>
           </tr>
           <% }) %>
 
@@ -61,6 +62,26 @@
       </div>
       
     </div>
+      <script>
+  OverlayScrollbarsGlobal.OverlayScrollbars(
+    document.querySelector('.tableWrapper'),
+    {}
+  );
+</script>
+<script>
+  function openOptions (e) {
+    const options = document.querySelector('.options');
+    if (options.hasChildNodes(document.querySelector('.popUp'))) {
+
+    }
+    const popUp = document.createElement('div');
+    popUp.classList.add('popUp')
+    options.appendChild(popUp);
+    
+
+  }
+</script>
+
     <script>
   new TomSelect('#genreFilter', { maxOptions: null, refreshThrottle: 0, dropdownParent: 'body' });
   new TomSelect('#developerFilter', { maxOptions: null, refreshThrottle: 0, dropdownParent: 'body' });
@@ -71,17 +92,19 @@
   const data = <%- JSON.stringify(allData) %>;
   const fuse = new Fuse(data, { keys: ['name'], threshold: 0.3 });
 
-  const div = document.createElement('div');
-      div.textContent = 'no results'
-      div.id = 'noResults'
-      div.classList = 'glass'
+  const noResultsDiv = document.createElement('div');
+      noResultsDiv.textContent = 'no results'
+      noResultsDiv.id = 'noResults';
+    const tbody = document.querySelector('tbody');
+    tbody.appendChild(noResultsDiv);
+    noResultsDiv.style.display = 'none';
+  
 
   function filterTable() {
     const query = document.getElementById('titleSearch').value.trim();
     const genre = document.getElementById('genreFilter').value;
     const developer = document.getElementById('developerFilter').value;
     const rows = document.querySelectorAll('#resultsTable tr:not(:first-child)');
-    const tableWrapper = document.querySelector('.tableWrapper');
 
     const fuseIds = query
       ? new Set(fuse.search(query).map(r => String(r.item.id)))
@@ -102,14 +125,19 @@
 
 
     // update last-visible class for border-radius
-    rows.forEach(row => row.classList.remove('last-visible'));
+    rows.forEach(row => {
+      row.classList.remove('first-visible')
+      row.classList.remove('last-visible')
+    });
     const visibleRows = [...rows].filter(row => row.style.display !== 'none');
-    if (visibleRows.length) visibleRows.at(-1).classList.add('last-visible');
+    if (visibleRows.length){
+      visibleRows.at(0).classList.add('first-visible');
+      visibleRows.at(-1).classList.add('last-visible');
+    } 
     if (visibleRows == false) {
-      tableWrapper.appendChild(div);
-    } else if (tableWrapper.childElementCount > 1) {
-      console.log(tableWrapper.childNodes)
-      tableWrapper.removeChild(div);
+      noResultsDiv.style.display = 'block';
+    } else if (noResultsDiv.style.display === 'block') {   
+      noResultsDiv.style.display = 'none';
     }
     
 
