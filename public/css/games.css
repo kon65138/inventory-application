@@ -288,3 +288,99 @@ table tr:nth-child(2) {
   background: rgba(0, 0, 0, 0.459);
   color: rgba(255, 255, 255, 0.466);
 }
+
+.editWrapper {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+.editWrapper.active {
+  display: flex;
+  background: rgba(255, 255, 255, 0.1); /* white tint, low opacity */
+  backdrop-filter: blur(8px); /* the frosted glass blur */
+  -webkit-backdrop-filter: blur(8px); /* Safari support */
+}
+
+#editForm {
+  width: 80vw;
+  padding: 1rem;
+  gap: 1rem;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+#editForm h3 {
+  color: rgba(0, 0, 0, 0.466);
+  width: 100%;
+  text-align: center;
+}
+
+#editForm label {
+  flex-wrap: none;
+  color: rgba(2, 61, 85, 0.808);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+#editForm div {
+  flex: 0 0 1;
+}
+
+#editForm input {
+  color: rgba(2, 61, 85, 0.808);
+  background: rgba(100, 210, 237, 0.15);
+  backdrop-filter: blur(12px);
+  flex: 1;
+  border-radius: 20px;
+  padding: 0.5rem;
+}
+
+#editForm input:focus {
+  outline: none;
+}
+
+#editForm .buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+#editForm .buttons button {
+  flex: 1;
+  border-radius: 20px;
+  padding: 0.5rem;
+}
+#editForm .buttons button {
+  font-weight: bold;
+  flex: 1;
+  border-radius: 20px;
+  padding: 0.5rem;
+}
+
+.cancel {
+  color: rgba(0, 0, 0, 0.466);
+}
+
+.cancel:hover {
+  color: rgba(255, 255, 255, 0.466);
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(14px);
+}
+
+#submit {
+  color: rgba(0, 0, 0, 0.788);
+  background: rgba(237, 100, 100, 0.377);
+  backdrop-filter: blur(12px);
+}
+
+#submit:hover {
+  color: rgba(255, 255, 255, 0.781);
+  background: rgb(221, 47, 47);
+  backdrop-filter: blur(12px);
+}

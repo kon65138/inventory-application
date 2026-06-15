@@ -63,8 +63,45 @@
       
     </div>
     <div id="popUp" data-parent-id="none">
-      <button class="edit">Edit<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil-icon lucide-pencil"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></svg></button>
-      <button class="delete">Delete<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-icon lucide-trash"><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
+      <button class="edit" onclick="openEditForm()">Edit<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil-icon lucide-pencil"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></svg></button>
+      <button class="delete" onclick="openDeleteComfimation()">Delete<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-icon lucide-trash"><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
+    </div>
+    <div class="editWrapper">
+      <form action="post" id="editForm" class="glass">
+        <h3>Edit Form</h3>
+        <label for="editName">
+          <div>Name</div>
+          <input type="text" value="" id="editName" name="name" class="glass">
+        </label>
+        <label for="editGenres">
+          <div>Genres</div>
+          <input type="text" value="" id="editGenres" name="genres" class="glass">
+        </label>
+        <label for="editDevelopers">
+          <div>Developers</div>
+          <input type="text" value="" id="editDevelopers" name="developers" class="glass">
+        </label>
+        <label for="editYear">
+          <div>year</div>
+          <input type="text" value="" id="editYear" name="release_date" class="glass">
+        </label>
+        <label for="editAbout">
+          <div>About</div>
+          <input type="text" value="" id="editAbout" name="wiki_link" class="glass">
+        </label>
+        <label for="editQuantity">
+          <div>Quanitity</div>
+          <input type="text" value="" id="editQuantity" name="quantity" class="glass">
+        </label>
+        <label for="adminPassword">
+          <div>Admin Password</div>
+          <input type="password" value="" id="adminPassword" name="password" class="glass" required>
+        </label>
+        <div class="buttons">
+          <button class="cancel glass" onclick="cancelBtnClickHandler()">Cancel</button>
+          <button id="submit" class="glass">Submit</button>
+        </div>
+      </form>
     </div>
       <script>
   OverlayScrollbarsGlobal.OverlayScrollbars(
@@ -78,6 +115,21 @@
     }
     }
   );
+</script>
+<script>
+  const editWrapper = document.querySelector('.editWrapper');
+  const form = document.getElementById('editForm');
+  function openEditForm() {
+    const inputs = document.querySelectorAll('#editForm input')
+    for (let i = 0; i < 6; i++) {
+      
+    }
+    editWrapper.classList.add('active');
+
+  }
+  function cancelBtnClickHandler() {
+    editWrapper.classList.remove('active');
+  }
 </script>
 <script>
   const popUp = document.getElementById('popUp');
