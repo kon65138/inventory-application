@@ -224,6 +224,7 @@ table tr:nth-child(2) {
   border-radius: 20px;
   padding: 0;
   margin: 0;
+  z-index: 2;
 }
 
 .options:hover {
@@ -237,10 +238,53 @@ table tr:nth-child(2) {
 #noResults {
   overflow: hidden;
   margin-top: 2rem;
-  width: 76.5vw;
+  width: calc(80vw - 2.2rem);
   text-align: center;
   color: rgba(2, 61, 85, 0.808);
-  padding: 0.5rem;
+  padding: 0.4rem;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
+}
+
+#popUp {
+  display: none;
+  position: absolute;
+  border-radius: 20px;
+}
+
+#popUp.active {
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.1); /* white tint, low opacity */
+  backdrop-filter: blur(8px); /* the frosted glass blur */
+  -webkit-backdrop-filter: blur(8px); /* Safari support */
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+#popUp .edit,
+#popUp .delete {
+  padding: 0.5rem;
+  background: none;
+  border: none;
+  color: rgba(0, 0, 0, 0.466);
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#popUp .edit {
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
+#popUp .delete {
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+#popUp .edit:hover,
+#popUp .delete:hover {
+  background: rgba(0, 0, 0, 0.459);
+  color: rgba(255, 255, 255, 0.466);
 }
