@@ -68,6 +68,61 @@ async function getAllDevelopers() {
   return rows;
 }
 
+async function editGame(
+  id,
+  { name, release_date, game_link, quantity, genres, developers },
+) {
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+
+    // 1. Update the scalar columns on games
+    await client.query(
+      `UPDATE games
+         SET name = $1, release_date = $2, game_link = $3, quantity = $4
+       WHERE id = $5`,
+      [name, release_date, game_link, quantity, id],
+    );
+
+    // 2. Genres: ensure each exists, then replace the junction rows
+    await client.query('DELETE FROM games_genres WHERE game_id = $1', [id]);
+    for (const genre of genres) {
+      const { rows } = await client.query(
+        `INSERT INTO genres (name) VALUES ($1)
+           ON CONFLICT (name) DO UPDATE SET name = EXCLUDED.name
+         RETURNING id`,
+        [genre],
+      );
+      await client.query(
+        'INSERT INTO games_genres (game_id, genre_id) VALUES ($1, $2)',
+        [id, rows[0].id],
+      );
+    }
+
+    // 3. Developers: same pattern
+    await client.query('DELETE FROM games_developers WHERE game_id = $1', [id]);
+    for (const dev of developers) {
+      const { rows } = await client.query(
+        `INSERT INTO developers (name) VALUES ($1)
+           ON CONFLICT (name) DO UPDATE SET name = EXCLUDED.name
+         RETURNING id`,
+        [dev],
+      );
+      await client.query(
+        'INSERT INTO games_developers (game_id, developer_id) VALUES ($1, $2)',
+        [id, rows[0].id],
+      );
+    }
+
+    await client.query('COMMIT');
+  } catch (err) {
+    await client.query('ROLLBACK');
+    throw err;
+  } finally {
+    client.release();
+  }
+}
+
 module.exports = {
   getAllGames,
   getGameInfo,
@@ -78,4 +133,5 @@ module.exports = {
   getAllData,
   getAllGenres,
   getAllDevelopers,
+  editGame,
 };

@@ -63,11 +63,11 @@
       
     </div>
     <div id="popUp" data-parent-id="none">
-      <button class="edit" onclick="openEditForm()">Edit<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil-icon lucide-pencil"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></svg></button>
-      <button class="delete" onclick="openDeleteComfimation()">Delete<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-icon lucide-trash"><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
+      <button class="edit" onclick="openEditForm(event)">Edit<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil-icon lucide-pencil"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></svg></button>
+      <button class="delete" onclick="openDeleteComfimation(event)">Delete<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-icon lucide-trash"><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
     </div>
     <div class="editWrapper">
-      <form action="post" id="editForm" class="glass">
+      <form method="post" onsubmit="submitHandler(event)" id="editForm" class="glass">
         <h3>Edit Form</h3>
         <label for="editName">
           <div>Name</div>
@@ -87,19 +87,19 @@
         </label>
         <label for="editAbout">
           <div>About</div>
-          <input type="text" value="" id="editAbout" name="wiki_link" class="glass">
+          <input type="text" value="" id="editAbout" name="game_link" class="glass">
         </label>
         <label for="editQuantity">
-          <div>Quanitity</div>
-          <input type="text" value="" id="editQuantity" name="quantity" class="glass">
+          <div>Quantity</div>
+          <input value="" id="editQuantity" name="quantity" class="glass">
         </label>
         <label for="adminPassword">
           <div>Admin Password</div>
-          <input type="password" value="" id="adminPassword" name="password" class="glass" required>
+          <input type="password" value="" id="adminPassword" name="adminPassword" class="glass" required>
         </label>
         <div class="buttons">
-          <button class="cancel glass" onclick="cancelBtnClickHandler()">Cancel</button>
-          <button id="submit" class="glass">Submit</button>
+          <button class="cancel glass" onclick="cancelBtnHandler()" type="button">Cancel</button>
+          <button id="submit" class="glass" type="submit">Submit</button>
         </div>
       </form>
     </div>
@@ -119,16 +119,48 @@
 <script>
   const editWrapper = document.querySelector('.editWrapper');
   const form = document.getElementById('editForm');
-  function openEditForm() {
-    const inputs = document.querySelectorAll('#editForm input')
-    for (let i = 0; i < 6; i++) {
-      
-    }
+  const inputs = document.querySelectorAll('#editForm input');
+  function openEditForm(e) {
+    const data = <%- JSON.stringify(allData) %>; 
+    const id = Number(popUp.dataset.parentId);
+    const currentData = data[id - 1];
+    inputs[0].value = currentData.name;
+    inputs[1].value = currentData.genres;
+    inputs[2].value = currentData.developers;
+    inputs[3].value = currentData.release_date;
+    inputs[4].value = currentData.game_link;
+    inputs[5].value = currentData.quantity;
+    
     editWrapper.classList.add('active');
 
   }
-  function cancelBtnClickHandler() {
+  function cancelBtnHandler() {
     editWrapper.classList.remove('active');
+    for (let input of inputs) {
+      input.value = '';
+    }
+
+  }
+  async function submitHandler(e) {
+    e.preventDefault();
+    const id = popUp.dataset.parentId;
+    try {
+      const res = await fetch(`/games/edit/${id}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(new FormData(form)),
+    });
+    
+    if (res.ok) {
+      editWrapper.classList.remove('active');
+     //update the row in-place
+    }
+    } catch(err) {
+      console.error(err)
+    }
+
+    
+
   }
 </script>
 <script>
@@ -136,6 +168,7 @@
   const options = document.querySelectorAll('.options');
   document.addEventListener('click', (e) => {
     if (!popUp.classList.contains('active')) return;
+    if (editWrapper.classList.contains('active')) return;
     if (!popUp.contains(e.target)) {
       popUp.classList.remove('active')
       popUp.dataset.parentId = "none";
