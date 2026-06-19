@@ -47,26 +47,41 @@
 }
 
 .chartWrapper {
-  position: relative;
-  flex: 0 0 1;
-  height: fit-content;
   border-radius: 20px;
   padding: 1rem;
 }
 
 .tableWrapper {
+  will-change: backdrop-filter;
   display: flex;
+  flex-direction: column;
   flex: 1;
+  max-height: 58vh;
+  overflow: auto;
+  border-radius: 20px;
   height: 100%;
+  background: rgba(255, 255, 255, 0.1); /* white tint, low opacity */
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+thead,
+tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+tbody tr:first-child,
+caption {
+  position: fixed;
+  top: 1.3rem;
+  z-index: 3;
 }
 
 .tableCaption {
+  top: 0rem;
+  margin-bottom: 1rem;
   background: rgba(255, 255, 255, 0.377);
-  backdrop-filter: blur(8px); /* the frosted glass blur */
-  -webkit-backdrop-filter: blur(8px); /* Safari support */
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
-  border-left: 1px solid rgba(255, 255, 255, 0.2);
-  border-right: 1px solid rgba(255, 255, 255, 0.2);
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   font-size: 0.75rem;
@@ -74,10 +89,11 @@
   color: rgba(0, 0, 0, 0.466);
   font-weight: bold;
   text-align: center;
+  width: 100%;
 }
 
 #lowStockTable {
-  flex: 1;
+  width: 100%;
   border: none;
   border-spacing: 0;
   border-radius: 20px;
@@ -91,20 +107,18 @@ th {
 
 td {
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  border-right: 1px solid rgba(255, 255, 255, 0.2);
   font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
   color: rgba(2, 61, 85, 0.808);
-  background: rgba(255, 255, 255, 0.1); /* white tint, low opacity */
-  backdrop-filter: blur(8px); /* the frosted glass blur */
-  -webkit-backdrop-filter: blur(8px); /* Safari support */
   padding: 0.4rem;
 }
 
 th {
   background: rgba(255, 255, 255, 0.377);
-  backdrop-filter: blur(8px); /* the frosted glass blur */
-  -webkit-backdrop-filter: blur(8px); /* Safari support */
   padding: 0.4rem;
+}
+
+table tr:nth-child(2) {
+  margin-top: 3.4rem;
 }
 
 /*
@@ -112,34 +126,31 @@ Source - https://stackoverflow.com/a/635863
 Posted by vamin, modified by community. See post 'Timeline' for change history
 Retrieved 2026-06-09, License - CC BY-SA 4.0
 */
-table tr td:first-child {
-  border-left: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-table tr:first-child th:nth-child(2) {
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
-  border-right: 1px solid rgba(255, 255, 255, 0.2);
-}
 
 table tr:first-child th:first-child {
   border-top: 1px solid rgba(255, 255, 255, 0.2);
-  border-left: 1px solid rgba(255, 255, 255, 0.2);
-  border-right: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 table tr:first-child th:last-child {
   border-top: 1px solid rgba(255, 255, 255, 0.2);
-  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+table tr td:last-child {
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 table tr:last-child td:first-child {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  border-left: 1px solid rgba(255, 255, 255, 0.2);
+  border-bottom: none;
   border-bottom-left-radius: 20px;
 }
 
 table tr:last-child td:last-child {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  border-bottom: none;
   border-bottom-right-radius: 20px;
+}
+
+.tableWrapper .os-scrollbar-vertical {
+  padding-top: 3.5rem;
+  padding-bottom: 1rem;
 }

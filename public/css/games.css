@@ -22,6 +22,10 @@
   gap: 1rem;
 }
 
+.filters select:not(.tomselected) {
+  visibility: hidden;
+}
+
 .ts-wrapper {
   flex: 1;
 }
@@ -71,30 +75,45 @@
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.ts-dropdown-content::-webkit-scrollbar,
-tbody::-webkit-scrollbar {
+.ts-dropdown-content::-webkit-scrollbar {
+  left: 10vw;
+  position: absolute;
   width: 6px;
 }
 
-.ts-dropdown-content::-webkit-scrollbar-track,
-tbody::-webkit-scrollbar-track {
+.tableScroll::-webkit-scrollbar {
+  width: 10px;
+}
+
+.ts-dropdown-content::-webkit-scrollbar-track {
   background: transparent;
   margin: 1rem 0 1rem 0;
 }
 
-.ts-dropdown-content::-webkit-scrollbar-thumb,
-tbody::-webkit-scrollbar-thumb {
+.tableScroll::-webkit-scrollbar-track {
+  height: 100%;
+  background: transparent;
+  margin: 0 0 0.8rem 0;
+}
+
+.ts-dropdown-content::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.3);
   border-radius: 10px;
 }
 
+.tableScroll::-webkit-scrollbar-thumb {
+  height: 2rem;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.3);
+}
+
 .ts-dropdown-content::-webkit-scrollbar-thumb:hover,
-tbody::-webkit-scrollbar-thumb:hover {
+.tableScroll::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.6);
 }
 
 .ts-dropdown-content::-webkit-scrollbar-button,
-tbody::-webkit-scrollbar-button {
+.tableScroll::-webkit-scrollbar-button {
   display: none;
 }
 
@@ -104,17 +123,44 @@ tbody::-webkit-scrollbar-button {
 }
 
 .tableWrapper {
-  will-change: backdrop-filter;
+  padding: 0;
+  background: rgba(255, 255, 255, 0.1); /* white tint, low opacity */
+  border: 1px solid rgba(255, 255, 255, 0.2);
   display: flex;
   flex-direction: column;
   flex: 1;
-  max-height: 60vh;
-  overflow: auto;
+  overflow: hidden;
   border-radius: 20px;
 }
 
+.tableScroll {
+  contain: content;
+  overflow-y: auto;
+  max-height: 55vh;
+}
+
+.headerTable {
+  background: rgba(255, 255, 255, 0.377);
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  width: 100%;
+  table-layout: fixed; /* both must match for columns to line up */
+  border: none;
+  border-spacing: 0;
+  padding-right: 10px;
+}
+
+.headerTable tr {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.headerTable tr:first-child th:not(:last-child) {
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+}
+
 #resultsTable {
-  flex: 1;
+  width: 100%;
+  table-layout: fixed; /* both must match for columns to line up */
   border: none;
   border-spacing: 0;
   border-radius: 20px;
@@ -123,13 +169,7 @@ tbody::-webkit-scrollbar-button {
 tbody {
   border-radius: 20px;
   display: block;
-  overflow: hidden;
   width: 100%;
-}
-
-.tableWrapper .os-scrollbar-vertical {
-  padding-top: 2.3rem;
-  padding-bottom: 1rem;
 }
 
 thead,
@@ -139,30 +179,17 @@ tbody tr {
   table-layout: fixed;
 }
 
-tbody tr:first-child {
-  position: fixed;
-  top: 0vh;
-  z-index: 3;
-  background: rgba(255, 255, 255, 0.377);
-}
-
 #resultsTable a {
   color: rgba(2, 61, 85, 0.808);
 }
 
-tr th:first-child,
 tr td:first-child {
   display: none;
-}
-
-.first-visible {
-  margin-top: 2rem;
 }
 
 th {
   color: rgba(0, 0, 0, 0.466);
   text-align: left;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 td {
@@ -178,7 +205,7 @@ th {
 }
 
 table tr td:last-child,
-#resultsTable tr:first-child th:last-child {
+.headerTable tr:first-child th:last-child {
   border-right: none;
 }
 
@@ -188,7 +215,7 @@ Posted by vamin, modified by community. See post 'Timeline' for change history
 Retrieved 2026-06-09, License - CC BY-SA 4.0
 */
 
-table tr:first-child th:not(:first-child) {
+#resultsTable tr:first-child th:not(:first-child) {
   border-right: 1px solid rgba(255, 255, 255, 0.2);
 }
 
@@ -208,10 +235,6 @@ tr.last-visible td:nth-child(2) {
 tr.last-visible td:last-child {
   border-bottom-right-radius: 20px;
   border-bottom: none;
-}
-
-table tr:nth-child(2) {
-  margin-top: 2rem;
 }
 
 .options {
@@ -237,7 +260,6 @@ table tr:nth-child(2) {
 
 #noResults {
   overflow: hidden;
-  margin-top: 2rem;
   width: calc(80vw - 2.2rem);
   text-align: center;
   color: rgba(2, 61, 85, 0.808);

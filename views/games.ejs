@@ -7,9 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
 <link href="/css/style.css" rel="stylesheet" />
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/overlayscrollbars@2/styles/overlayscrollbars.min.css" />
-<script src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2/browser/overlayscrollbars.browser.es6.min.js"></script>
-
+    
     <link href="/css/games.css" rel="stylesheet" />
     <title>100 XBOX360 GAMES</title>
   </head>
@@ -34,33 +32,40 @@
         <% }) %>
         </select>
       </div>
-      <div class="tableWrapper glass" data-overlayscrollbars-initialize>
-        <table id="resultsTable">
-        <caption class="tableCaption"></caption>
-        <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Genres</th>
-            <th>Developers</th>
-            <th>Year</th>
-            <th>About</th>
-            <th>Quantity</th>
-          </tr>
-            <% allData.forEach(row => { %>
-          <tr data-id="<%=row.id%>" class="tableRow">
-            <td><%= row.id %></td>
-            <td><%=row.name%></td>
-            <td><%=row.genres%></td>
-            <td><%=row.developers%></td>
-            <td><%=row.release_date%></td>
-            <td><a href="<%=row.game_link %>" target="_blank">wiki</a></td>
-            <td><%= row.quantity %> <button class="options" onclick="openOptions(event)"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis-vertical-icon lucide-ellipsis-vertical"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg></button></td>
-          </tr>
-          <% }) %>
-
-      </table>
+      <script>
+  new TomSelect('#genreFilter', { maxOptions: null, refreshThrottle: 0, dropdownParent: 'body' });
+  new TomSelect('#developerFilter', { maxOptions: null, refreshThrottle: 0, dropdownParent: 'body' });
+</script>
+      <div class="tableWrapper" >
+        <table class="headerTable">
+          <tr><th>Name</th><th>Genres</th><th>Developers</th><th>Year</th><th>About</th><th>Quantity</th></tr>
+        </table>
+        <div class="tableScroll">
+          <table id="resultsTable">
+              <% allData.forEach(row => { %>
+            <tr data-id="<%=row.id%>" class="tableRow">
+              <td><%= row.id %></td>
+              <td><%=row.name%></td>
+              <td><%=row.genres%></td>
+              <td><%=row.developers%></td>
+              <td><%=row.release_date%></td>
+              <td><a href="<%=row.game_link %>" target="_blank">wiki</a></td>
+              <td><%= row.quantity %> <button class="options" onclick="openOptions(event)"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis-vertical-icon lucide-ellipsis-vertical"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg></button></td>
+            </tr>
+            <% }) %>
+          </table>
+        </div>
       </div>
-      
+      <script>
+  document.querySelector('.tableWrapper').addEventListener('scroll', () => {
+  if (popUp.classList.contains('active')) {
+    popUp.classList.remove('active');
+    popUp.dataset.parentId = 'none';
+  }
+});
+
+</script>
+</script>
     </div>
     <div id="popUp" data-parent-id="none">
       <button class="edit" onclick="openEditForm(event)">Edit<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil-icon lucide-pencil"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></svg></button>
@@ -103,19 +108,6 @@
         </div>
       </form>
     </div>
-      <script>
-  OverlayScrollbarsGlobal.OverlayScrollbars(
-    document.querySelector('.tableWrapper'),
-    {},{
-      scroll: () => {
-      if (popUp.classList.contains('active')) {
-        popUp.classList.remove('active');
-        popUp.dataset.parentId = 'none';
-      }
-    }
-    }
-  );
-</script>
 <script>
   const editWrapper = document.querySelector('.editWrapper');
   const form = document.getElementById('editForm');
@@ -196,11 +188,6 @@
       popUp.dataset.parentId = tableRowId;
     }
   }
-</script>
-
-    <script>
-  new TomSelect('#genreFilter', { maxOptions: null, refreshThrottle: 0, dropdownParent: 'body' });
-  new TomSelect('#developerFilter', { maxOptions: null, refreshThrottle: 0, dropdownParent: 'body' });
 </script>
 <script type="module">
   import Fuse from '/libs/fuse.mjs';

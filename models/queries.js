@@ -19,7 +19,7 @@ async function getTotalStock() {
 
 async function getLowStock() {
   const { rows } = await pool.query(
-    'SELECT id, name, quantity FROM games WHERE quantity < 30;',
+    'SELECT id, name, quantity FROM games WHERE quantity < 7;',
   );
   return rows;
 }
@@ -44,7 +44,7 @@ async function getGenreDistribution() {
 
 async function getAllData() {
   const { rows } =
-    await pool.query(`SELECT g.id, g.name, g.release_date, g.quantity, g.game_link, g.img_src,
+    await pool.query(`SELECT g.id, g.name, g.release_date, g.quantity, g.game_link,
        STRING_AGG(DISTINCT ge.name, ', ' ORDER BY ge.name) AS genres,
        STRING_AGG(DISTINCT d.name, ', ' ORDER BY d.name) AS developers
 FROM games g

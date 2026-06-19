@@ -17,6 +17,10 @@ app.use(
   '/libs',
   express.static(path.join(__dirname, 'node_modules/fuse.js/dist')),
 );
+app.use(
+  '/clusterize',
+  express.static(path.join(__dirname, 'node_modules/clusterize.js')),
+);
 
 app.use(express.static(assetsPath));
 app.use(express.urlencoded({ extended: true }));

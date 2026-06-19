@@ -18,9 +18,8 @@ CREATE TABLE IF NOT EXISTS genres (
 CREATE TABLE IF NOT EXISTS games (
   id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
   name VARCHAR(255),
-  release_date VARCHAR(255),
+  release_date INTEGER,
   game_link VARCHAR(255),
-  img_src VARCHAR(255),
   quantity INTEGER
 );
 
@@ -37,7 +36,7 @@ CREATE TABLE IF NOT EXISTS games_genres (
 );
 `;
 
-function randSelect100Games() {
+function filterGames() {
   function filter(game) {
     if (game.Game === null) return true;
     if (game.Genre === null) return true;
@@ -45,23 +44,12 @@ function randSelect100Games() {
     if (game.GameLink === null) return true;
     if (game.Year === null) return true;
     if (game.Dev.trim().slice(-1) === ',') return true;
-    if (devNames.includes(game.Dev)) return true;
-    if (genreNames.includes(game.Genre)) return true;
     return false;
   }
-  let devNames = [];
-  let genreNames = [];
   let games = [];
-  let num = [];
-  let curNum;
-  for (let i = 0; i < 100; i++) {
-    do {
-      curNum = Math.floor(Math.random() * 2151);
-    } while (num.includes(curNum) || filter(XBOXGames[curNum]));
-    num.push(curNum);
-    devNames.push(XBOXGames[curNum].Dev);
-    genreNames.push(XBOXGames[curNum].Genre);
-    games.push(XBOXGames[num[i]]);
+  for (let game of XBOXGames) {
+    if (filter(game)) continue;
+    games.push(game);
   }
   return games;
 }
@@ -133,8 +121,8 @@ async function main() {
     console.log('creating tables...');
     await client.query(createTablesSQL);
 
-    console.log('choosing games...');
-    const selectedGames = randSelect100Games();
+    console.log('filtering games...');
+    const selectedGames = filterGames();
 
     console.log('populating tables...');
 
@@ -223,22 +211,18 @@ async function main() {
     const gameRows = [];
     for (let i = 0; i < selectedGames.length; i++) {
       const game = selectedGames[i];
-      console.log('getting wikipedia imgs');
-      const imgSrc = await getWikipediaImage(game.GameLink);
-      const quantity = Math.floor(Math.random() * 300);
-      await sleep(150);
+      const quantity = Math.floor(Math.random() * 50);
       gameRows.push([
         game.Game,
-        game.Year,
+        Number(game.Year),
         game.GameLink,
-        imgSrc,
         Number(quantity),
       ]);
     }
 
     const gameResult = await client.query(
       format(
-        `INSERT INTO games (name, release_date, game_link, img_src, quantity) VALUES %L RETURNING id, name`,
+        `INSERT INTO games (name, release_date, game_link, quantity) VALUES %L RETURNING id, name`,
         gameRows,
       ),
     );
@@ -267,7 +251,7 @@ async function main() {
     });
     await client.query(
       format(
-        `INSERT INTO games_developers (game_id, developer_id) VALUES %L`,
+        `INSERT INTO games_developers (game_id, developer_id) VALUES %L ON CONFLICT DO NOTHING`,
         gameDevRows,
       ),
     );
@@ -291,7 +275,7 @@ async function main() {
     });
     await client.query(
       format(
-        `INSERT INTO games_genres (game_id, genre_id) VALUES %L`,
+        `INSERT INTO games_genres (game_id, genre_id) VALUES %L ON CONFLICT DO NOTHING`,
         gameGenreRows,
       ),
     );
