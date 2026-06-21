@@ -123,6 +123,24 @@ async function editGame(
   }
 }
 
+async function deleteGame(id) {
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+
+    await client.query('DELETE FROM games_genres WHERE game_id = $1', [id]);
+    await client.query('DELETE FROM games_developers WHERE game_id = $1', [id]);
+    await client.query('DELETE FROM games WHERE id = $1', [id]);
+
+    await client.query('COMMIT');
+  } catch (err) {
+    await client.query('ROLLBACK');
+    throw err;
+  } finally {
+    client.release();
+  }
+}
+
 module.exports = {
   getAllGames,
   getGameInfo,
@@ -134,4 +152,5 @@ module.exports = {
   getAllGenres,
   getAllDevelopers,
   editGame,
+  deleteGame,
 };

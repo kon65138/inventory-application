@@ -69,7 +69,7 @@
     </div>
     <div id="popUp" data-parent-id="none">
       <button class="edit" onclick="openEditForm(event)">Edit<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil-icon lucide-pencil"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></svg></button>
-      <button class="delete" onclick="openDeleteComfimation(event)">Delete<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-icon lucide-trash"><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
+      <button class="delete" onclick="openDeleteForm(event)">Delete<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-icon lucide-trash"><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
     </div>
     <div class="editWrapper">
       <form method="post" onsubmit="submitHandler(event)" id="editForm" class="glass">
@@ -106,15 +106,35 @@
 
         <div class="buttons">
           <button class="cancel glass" onclick="cancelBtnHandler()" type="button">Cancel</button>
-          <button id="submit" class="glass" type="submit">Submit</button>
+          <button id="submit" class="glass" type="submit">Edit</button>
+        </div>
+      </form>
+    </div>
+    <div class="deleteWrapper">
+      <form method="POST" id="deleteForm" class="glass" onsubmit="deleteSubmitHandler(event)">
+        <h3>Comfirm Deletion</h3>
+        <div class="RUsure"></div>
+        <label for="comfimationPassword">
+          <div>Admin Password</div>
+          <input type="password" value="" id="comfimationPassword" name="adminPassword" class="glass" required>
+        </label>
+        <ul id="formErrors" class="errorList"></ul>
+
+        <div class="buttons">
+          <button class="cancel glass" onclick="cancelBtnHandler()" type="button">Cancel</button>
+          <button id="submit" class="glass" type="submit">Delete</button>
         </div>
       </form>
     </div>
 <script>
   const editWrapper = document.querySelector('.editWrapper');
-  const form = document.getElementById('editForm');
+  const deleteWrapper = document.querySelector('.deleteWrapper')
+  const editform = document.getElementById('editForm');
+  const deleteForm = document.getElementById('deleteForm');
   const inputs = document.querySelectorAll('#editForm input');
+  const deleteInpt = document.querySelector('#comfimationPassword');
   const list = document.getElementById('formErrors');
+  const RUsure = document.querySelector('.RUsure');
 
 
   function openEditForm(e) {
@@ -133,6 +153,7 @@
   }
   function cancelBtnHandler() {
     editWrapper.classList.remove('active');
+    deleteWrapper.classList.remove('active');
     for (let input of inputs) {
       input.value = '';
     }
@@ -146,7 +167,39 @@
       const res = await fetch(`/games/edit/${id}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams(new FormData(form)),
+      body: new URLSearchParams(new FormData(editform)),
+    });
+    
+    if (res.ok) {
+      editWrapper.classList.remove('active');
+      location.reload()
+    }
+
+    if (res.status === 400) {
+      const { errors } = await res.json();
+      list.innerHTML = errors.map(e => `<li>${e.msg}</li>`).join('');
+    }
+    } catch(err) {
+      console.error(err)
+    }
+  }
+
+  function openDeleteForm() {
+    const data = <%- JSON.stringify(allData) %>; 
+    const id = Number(popUp.dataset.parentId);
+    const currentData = data[id - 1];
+    RUsure.textContent = `Are you sure you want to delete ${currentData.name} from the DataBase?`;
+    deleteWrapper.classList.add('active');
+  };
+
+  async function deleteSubmitHandler(e) {
+    e.preventDefault();
+    const id = popUp.dataset.parentId;
+    try {
+      const res = await fetch(`/games/delete/${id}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(new FormData(deleteForm)),
     });
     
     if (res.ok) {
@@ -162,7 +215,6 @@
       console.error(err)
     }
 
-    
 
   }
 </script>
@@ -171,7 +223,7 @@
   const options = document.querySelectorAll('.options');
   document.addEventListener('click', (e) => {
     if (!popUp.classList.contains('active')) return;
-    if (editWrapper.classList.contains('active')) return;
+    if (editWrapper.classList.contains('active') || deleteWrapper.classList.contains('active')) return;
     if (!popUp.contains(e.target)) {
       popUp.classList.remove('active')
       popUp.dataset.parentId = "none";

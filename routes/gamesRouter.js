@@ -30,7 +30,14 @@ const validateEdit = [
     .withMessage('password incorrect'),
 ];
 
+const validateDeletion = [
+  validationChain('adminPassword')
+    .equals(process.env.ADMIN_PASSWORD)
+    .withMessage('password incorrect'),
+];
+
 gamesRouter.get('/', gamesController.get);
 gamesRouter.post('/edit/:id', validateEdit, gamesController.postEdit);
+gamesRouter.post('/delete/:id', validateDeletion, gamesController.postDeletion);
 
 module.exports = gamesRouter;

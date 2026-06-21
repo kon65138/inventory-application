@@ -41,4 +41,24 @@ async function postEdit(req, res) {
   }
 }
 
-module.exports = { get, postEdit };
+async function postDeletion(req, res) {
+  const errors = validationResult(req);
+  if (!errors.isEmpty(errors)) {
+    console.error(errors);
+    const unique = [...new Map(errors.array().map((e) => [e.msg, e])).values()];
+    return res.status(400).json({ errors: unique });
+  }
+  const { id } = req.params;
+  try {
+    const game = await db.getGameInfo(id);
+    console.log(`deleting ${game.name}...`);
+    await db.deleteGame(id);
+    console.log('deleted');
+    res.sendStatus(200);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Database error');
+  }
+}
+
+module.exports = { get, postEdit, postDeletion };

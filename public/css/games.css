@@ -310,7 +310,8 @@ tr.last-visible td:last-child {
   color: rgba(255, 255, 255, 0.466);
 }
 
-.editWrapper {
+.editWrapper,
+.deleteWrapper {
   width: 100vw;
   height: 100vh;
   position: absolute;
@@ -320,14 +321,16 @@ tr.last-visible td:last-child {
   z-index: 100;
 }
 
-.editWrapper.active {
+.editWrapper.active,
+.deleteWrapper.active {
   display: flex;
   background: rgba(255, 255, 255, 0.1); /* white tint, low opacity */
   backdrop-filter: blur(8px); /* the frosted glass blur */
   -webkit-backdrop-filter: blur(8px); /* Safari support */
 }
 
-#editForm {
+#editForm,
+#deleteForm {
   width: 80vw;
   padding: 1rem;
   gap: 1rem;
@@ -336,13 +339,13 @@ tr.last-visible td:last-child {
   flex-direction: column;
 }
 
-#editForm h3 {
+h3 {
   color: rgba(0, 0, 0, 0.466);
   width: 100%;
   text-align: center;
 }
 
-#editForm label {
+label {
   flex-wrap: none;
   color: rgba(2, 61, 85, 0.808);
   display: flex;
@@ -350,11 +353,13 @@ tr.last-visible td:last-child {
   gap: 0.5rem;
 }
 
-#editForm div {
+#editForm div,
+#deleteForm div {
   flex: 0 0 1;
 }
 
-#editForm input {
+#editForm input,
+#deleteForm input {
   color: rgba(2, 61, 85, 0.808);
   background: rgba(100, 210, 237, 0.15);
   backdrop-filter: blur(12px);
@@ -363,25 +368,23 @@ tr.last-visible td:last-child {
   padding: 0.5rem;
 }
 
-#editForm input:focus {
+#editForm input:focus,
+#deleteForm input:focus {
   outline: none;
 }
 
-#editForm .buttons {
+#editForm .buttons,
+#deleteForm .buttons {
   display: flex;
   gap: 1rem;
 }
 
-#editForm .buttons button {
+#editForm .buttons button,
+#deleteForm .buttons button {
   flex: 1;
   border-radius: 20px;
   padding: 0.5rem;
-}
-#editForm .buttons button {
   font-weight: bold;
-  flex: 1;
-  border-radius: 20px;
-  padding: 0.5rem;
 }
 
 #formErrors {
@@ -410,4 +413,8 @@ tr.last-visible td:last-child {
   color: rgba(255, 255, 255, 0.781);
   background: rgb(221, 47, 47);
   backdrop-filter: blur(12px);
+}
+
+.RUsure {
+  color: rgba(2, 61, 85, 0.808);
 }
