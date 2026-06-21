@@ -384,6 +384,12 @@ tr.last-visible td:last-child {
   padding: 0.5rem;
 }
 
+#formErrors {
+  list-style-type: circle;
+  gap: 1rem;
+  color: rgba(255, 0, 0, 0.603);
+}
+
 .cancel {
   color: rgba(0, 0, 0, 0.466);
 }

@@ -21,8 +21,10 @@ async function get(req, res) {
 
 async function postEdit(req, res) {
   const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
+  if (!errors.isEmpty(errors)) {
+    console.error(errors);
+    const unique = [...new Map(errors.array().map((e) => [e.msg, e])).values()];
+    return res.status(400).json({ errors: unique });
   }
   const { id } = req.params;
   try {

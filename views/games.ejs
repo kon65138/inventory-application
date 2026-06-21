@@ -88,7 +88,7 @@
         </label>
         <label for="editYear">
           <div>year</div>
-          <input type="text" value="" id="editYear" name="release_date" class="glass">
+          <input type="" value="" id="editYear" name="release_date" class="glass">
         </label>
         <label for="editAbout">
           <div>About</div>
@@ -102,6 +102,8 @@
           <div>Admin Password</div>
           <input type="password" value="" id="adminPassword" name="adminPassword" class="glass" required>
         </label>
+        <ul id="formErrors" class="errorList"></ul>
+
         <div class="buttons">
           <button class="cancel glass" onclick="cancelBtnHandler()" type="button">Cancel</button>
           <button id="submit" class="glass" type="submit">Submit</button>
@@ -112,6 +114,9 @@
   const editWrapper = document.querySelector('.editWrapper');
   const form = document.getElementById('editForm');
   const inputs = document.querySelectorAll('#editForm input');
+  const list = document.getElementById('formErrors');
+
+
   function openEditForm(e) {
     const data = <%- JSON.stringify(allData) %>; 
     const id = Number(popUp.dataset.parentId);
@@ -131,6 +136,7 @@
     for (let input of inputs) {
       input.value = '';
     }
+    list.innerHTML = ''
 
   }
   async function submitHandler(e) {
@@ -145,7 +151,12 @@
     
     if (res.ok) {
       editWrapper.classList.remove('active');
-     //update the row in-place
+      location.reload()
+    }
+
+    if (res.status === 400) {
+      const { errors } = await res.json();
+      list.innerHTML = errors.map(e => `<li>${e.msg}</li>`).join('');
     }
     } catch(err) {
       console.error(err)

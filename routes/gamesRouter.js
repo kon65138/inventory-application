@@ -11,18 +11,23 @@ const arraySanitizer = (value) =>
     .flatMap((g) => g.split(','))
     .map((s) => s.trim());
 
-const validationChain = (name, displayName) =>
-  body(name).trim().notEmpty().withMessage(`${displayName} can not be empty.`);
+const validationChain = (name) =>
+  body(name).trim().notEmpty().withMessage(`fields can not be empty`);
 
 const validateEdit = [
   validationChain('name', 'Name'),
   validationChain('genres', 'Genres').customSanitizer(arraySanitizer),
   validationChain('developers', 'Developers').customSanitizer(arraySanitizer),
-  validationChain('release_date', 'Year'),
+  validationChain('release_date', 'Year')
+    .isNumeric()
+    .withMessage('Year has to be an integer'),
   validationChain('game_link', 'About'),
   validationChain('quantity', 'Quantity')
     .isNumeric()
-    .withMessage('Quantity has to be an integer.'),
+    .withMessage('Quantity has to be an integer'),
+  validationChain('adminPassword')
+    .equals(process.env.ADMIN_PASSWORD)
+    .withMessage('password incorrect'),
 ];
 
 gamesRouter.get('/', gamesController.get);
