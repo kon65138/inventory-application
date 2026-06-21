@@ -12,6 +12,8 @@
     <title>100 XBOX360 GAMES</title>
   </head>
   <body>
+    <script id="gamesData" type="application/json"><%- JSON.stringify(allData).replace(/</g, '\\u003c') %></script>
+
     <%- include('navBar', {currentPage: currentPage}) %>
     <i><h1 id="title"><%= title %></h1></i>
     <div class="games glass">
@@ -138,7 +140,8 @@
 
 
   function openEditForm(e) {
-    const data = <%- JSON.stringify(allData) %>; 
+    const data = JSON.parse(document.getElementById('gamesData').textContent);
+ 
     const id = Number(popUp.dataset.parentId);
     const currentData = data[id - 1];
     inputs[0].value = currentData.name;
@@ -185,7 +188,8 @@
   }
 
   function openDeleteForm() {
-    const data = <%- JSON.stringify(allData) %>; 
+    const data = JSON.parse(document.getElementById('gamesData').textContent);
+
     const id = Number(popUp.dataset.parentId);
     const currentData = data[id - 1];
     RUsure.textContent = `Are you sure you want to delete ${currentData.name} from the DataBase?`;
@@ -255,7 +259,8 @@
 <script type="module">
   import Fuse from '/libs/fuse.mjs';
 
-  const data = <%- JSON.stringify(allData) %>;
+  const data = JSON.parse(document.getElementById('gamesData').textContent);
+
   const fuse = new Fuse(data, { keys: ['name'], threshold: 0.3 });
 
   const noResultsDiv = document.createElement('div');

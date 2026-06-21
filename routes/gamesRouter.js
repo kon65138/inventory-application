@@ -21,7 +21,9 @@ const validateEdit = [
   validationChain('release_date', 'Year')
     .isNumeric()
     .withMessage('Year has to be an integer'),
-  validationChain('game_link', 'About'),
+  validationChain('game_link')
+    .isURL({ protocols: ['http', 'https'], require_protocol: true })
+    .withMessage('About must be a valid URL'),
   validationChain('quantity', 'Quantity')
     .isNumeric()
     .withMessage('Quantity has to be an integer'),

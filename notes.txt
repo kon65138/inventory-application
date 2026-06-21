@@ -10,11 +10,13 @@ about: simple page with some details about site and why it exists
 
 
 todo:
-remove img src and make it 1000games instead of 100,
-make about page, TICK
-make games table scrollable instead of page (page scrolling with blur = bad preformance), TICK
-make sure inputs are sanitized,
-add delete and edit functions (with password),
+remove img src and make it 1000games instead of 100 DONE!!!,
+make about page, HALF DONE!!!!
+make games table scrollable instead of page (page scrolling with blur = bad preformance), DONE!!!
+make sure inputs are sanitized DONE!!!!,
+add delete and edit functions (with password) DONE!!!!,
+add create method,
+make category creatation better (no action & adventure and action - adventure as seperate catagories)
 add some more cool animations,
 fix the missalignment of the dropdowns
 

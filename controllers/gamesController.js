@@ -26,7 +26,7 @@ async function postEdit(req, res) {
     const unique = [...new Map(errors.array().map((e) => [e.msg, e])).values()];
     return res.status(400).json({ errors: unique });
   }
-  const { id } = req.params;
+  const id = Number(req.params.id);
   try {
     console.log('edit info:', req.body);
     console.log('trying to edit');
@@ -48,7 +48,7 @@ async function postDeletion(req, res) {
     const unique = [...new Map(errors.array().map((e) => [e.msg, e])).values()];
     return res.status(400).json({ errors: unique });
   }
-  const { id } = req.params;
+  const id = Number(req.params.id);
   try {
     const game = await db.getGameInfo(id);
     console.log(`deleting ${game.name}...`);
