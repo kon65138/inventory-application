@@ -137,6 +137,7 @@
   contain: content;
   overflow-y: auto;
   max-height: 55vh;
+  scrollbar-gutter: stable;
 }
 
 .headerTable {
@@ -150,7 +151,7 @@
   padding-right: 10px;
 }
 
-.headerTable tr {
+.headerTable th {
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
@@ -164,6 +165,7 @@
   border: none;
   border-spacing: 0;
   border-radius: 20px;
+  overflow: hidden;
 }
 
 tbody {
@@ -181,10 +183,6 @@ tbody tr {
 
 #resultsTable a {
   color: rgba(2, 61, 85, 0.808);
-}
-
-tr td:first-child {
-  display: none;
 }
 
 th {
@@ -266,6 +264,7 @@ tr.last-visible td:last-child {
   padding: 0.4rem;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
+  background: none;
 }
 
 #popUp {

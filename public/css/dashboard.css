@@ -52,16 +52,60 @@
 }
 
 .tableWrapper {
+  content: contain;
   will-change: backdrop-filter;
   display: flex;
   flex-direction: column;
   flex: 1;
   max-height: 58vh;
-  overflow: auto;
+  overflow: hidden;
   border-radius: 20px;
   height: 100%;
   background: rgba(255, 255, 255, 0.1); /* white tint, low opacity */
   border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.headerTable {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.377);
+}
+
+.headerTable table {
+  border: none;
+  border-spacing: 0;
+  border-radius: 20px;
+  padding-right: 10px;
+}
+
+.tableScroll {
+  contain: content;
+  height: 100%;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+.tableScroll::-webkit-scrollbar {
+  width: 10px;
+}
+
+.tableScroll::-webkit-scrollbar-track {
+  height: 100%;
+  background: transparent;
+  margin: 0 0 0.8rem 0;
+}
+
+.tableScroll::-webkit-scrollbar-thumb {
+  height: 2rem;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.tableScroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.tableScroll::-webkit-scrollbar-button {
+  display: none;
 }
 
 thead,
@@ -71,17 +115,7 @@ tbody tr {
   table-layout: fixed;
 }
 
-tbody tr:first-child,
-caption {
-  position: fixed;
-  top: 1.3rem;
-  z-index: 3;
-}
-
 .tableCaption {
-  top: 0rem;
-  margin-bottom: 1rem;
-  background: rgba(255, 255, 255, 0.377);
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   font-size: 0.75rem;
@@ -113,12 +147,7 @@ td {
 }
 
 th {
-  background: rgba(255, 255, 255, 0.377);
   padding: 0.4rem;
-}
-
-table tr:nth-child(2) {
-  margin-top: 3.4rem;
 }
 
 /*
@@ -148,9 +177,4 @@ table tr:last-child td:first-child {
 table tr:last-child td:last-child {
   border-bottom: none;
   border-bottom-right-radius: 20px;
-}
-
-.tableWrapper .os-scrollbar-vertical {
-  padding-top: 3.5rem;
-  padding-bottom: 1rem;
 }

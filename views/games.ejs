@@ -44,7 +44,7 @@
           <table id="resultsTable">
               <% allData.forEach(row => { %>
             <tr data-id="<%=row.id%>" class="tableRow">
-              <td><%= row.id %></td>
+              <td style="display: none;"><%= row.id %></td>
               <td><%=row.name%></td>
               <td><%=row.genres%></td>
               <td><%=row.developers%></td>
@@ -196,55 +196,49 @@
   const fuse = new Fuse(data, { keys: ['name'], threshold: 0.3 });
 
   const noResultsDiv = document.createElement('div');
-      noResultsDiv.textContent = 'no results'
-      noResultsDiv.id = 'noResults';
-    const tbody = document.querySelector('tbody');
-    tbody.appendChild(noResultsDiv);
-    noResultsDiv.style.display = 'none';
+  noResultsDiv.textContent = 'no results';
+  noResultsDiv.id = 'noResults';
+  const tbody = document.querySelector('#resultsTable tbody');
+  tbody.appendChild(noResultsDiv);
+  noResultsDiv.style.display = 'none';
+
+  const rows = document.querySelectorAll('#resultsTable tr');
+  const rowById = new Map([...rows].map(r => [r.dataset.id, r]));
+  const titleSearch = document.getElementById('titleSearch');
+  const genreFilter = document.getElementById('genreFilter');
+  const developerFilter = document.getElementById('developerFilter');
   
 
   function filterTable() {
-    const query = document.getElementById('titleSearch').value.trim();
-    const genre = document.getElementById('genreFilter').value;
-    const developer = document.getElementById('developerFilter').value;
-    const rows = document.querySelectorAll('#resultsTable tr:not(:first-child)');
+  const query = titleSearch.value.trim();
+  const genre = genreFilter.value;
+  const developer = developerFilter.value;
+  const fuseIds = query ? new Set(fuse.search(query).map(r => String(r.item.id))) : null;
 
-    const fuseIds = query
-      ? new Set(fuse.search(query).map(r => String(r.item.id)))
-      : null;
+  // PHASE 1 — compute from the data array only. No DOM reads, no layout.
+  let firstVisible = null, lastVisible = null;
 
-    rows.forEach(row => {
-      const id = row.dataset.id;
-      const genres = row.cells[2].textContent;
-      const developers = row.cells[3].textContent;
+  for (const item of data) {
+    const id = String(item.id);
+    const show =
+      (!fuseIds || fuseIds.has(id)) &&
+      (!genre || (item.genres || '').includes(genre)) &&
+      (!developer || (item.developers || '').includes(developer));
 
-      const matchesTitle = !fuseIds || fuseIds.has(id);
-      const matchesGenre = !genre || genres.includes(genre);
-      const matchesDev = !developer || developers.includes(developer);
-
-      row.style.display = matchesTitle && matchesGenre && matchesDev ? '' : 'none';
-    });
-
-
-
-    // update last-visible class for border-radius
-    rows.forEach(row => {
-      row.classList.remove('first-visible')
-      row.classList.remove('last-visible')
-    });
-    const visibleRows = [...rows].filter(row => row.style.display !== 'none');
-    if (visibleRows.length){
-      visibleRows.at(0).classList.add('first-visible');
-      visibleRows.at(-1).classList.add('last-visible');
-    } 
-    if (visibleRows == false) {
-      noResultsDiv.style.display = 'block';
-    } else if (noResultsDiv.style.display === 'block') {   
-      noResultsDiv.style.display = 'none';
+    const row = rowById.get(id);
+    // PHASE 2 — writes only
+    row.style.display = show ? '' : 'none';
+    row.classList.remove('first-visible', 'last-visible');
+    if (show) {
+      if (!firstVisible) firstVisible = row;
+      lastVisible = row;
     }
-    
-
   }
+
+  if (firstVisible) firstVisible.classList.add('first-visible');
+  if (lastVisible) lastVisible.classList.add('last-visible');
+  noResultsDiv.style.display = firstVisible ? 'none' : 'block';
+}
 
   document.getElementById('titleSearch').addEventListener('input', filterTable);
 

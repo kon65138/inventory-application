@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="/css/style.css" rel="stylesheet" />
     <link rel="stylesheet" href="/css/dashboard.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/overlayscrollbars@2/styles/overlayscrollbars.min.css" />
-    <script src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2/browser/overlayscrollbars.browser.es6.min.js"></script>
     <title>100 XBOX360 games</title>
   </head>
   <body>
@@ -48,15 +46,18 @@
         <div class="chartWrapper glass">
           <canvas id="genreChart"></canvas>
         </div>
-        <div class="tableWrapper" data-overlayscrollbars-initialize>
-          <table id="lowStockTable" >
-            <div class="fixed">
-              <caption class="tableCaption">Low Stock Games</caption>
-            <tr>
-              <th>Name</th>
-              <th>Quantity</th>
-            </tr>
-            </div>
+        <div class="tableWrapper">
+          <div class="headerTable">
+            <table>
+              <caption class="tableCaption">low stock games</caption>
+              <tr>
+                <th>Name</th>
+                <th>Quantity</th>
+              </tr>
+            </table>
+          </div>
+          <div class="tableScroll">
+            <table id="lowStockTable" >
             <% lowStock.forEach(row => {%>
             <tr>
               <td><%= row.name %></td>
@@ -64,15 +65,10 @@
             </tr>
             <% }) %>
           </table>
+          </div>
         </div>
       </div>
     </div>
-    <script>
-      OverlayScrollbarsGlobal.OverlayScrollbars(
-    document.querySelector('.tableWrapper'),
-    {})
-    </script>
-
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
   const ctx = document.getElementById('genreChart');
