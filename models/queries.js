@@ -142,6 +142,67 @@ async function deleteGame(id) {
   }
 }
 
+async function addGame({
+  name,
+  release_date,
+  game_link,
+  quantity,
+  genres,
+  developers,
+}) {
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+
+    // 1. Insert the game, get its new id
+    const { rows } = await client.query(
+      `INSERT INTO games (name, release_date, game_link, quantity)
+       VALUES ($1, $2, $3, $4)
+       RETURNING id`,
+      [name, release_date, game_link, quantity],
+    );
+    const gameId = rows[0].id;
+
+    // 2. Genres: ensure each exists, then link
+    for (const genre of genres) {
+      const { rows: gr } = await client.query(
+        `INSERT INTO genres (name) VALUES ($1)
+           ON CONFLICT (name) DO UPDATE SET name = EXCLUDED.name
+         RETURNING id`,
+        [genre],
+      );
+      await client.query(
+        `INSERT INTO games_genres (game_id, genre_id) VALUES ($1, $2)
+           ON CONFLICT DO NOTHING`,
+        [gameId, gr[0].id],
+      );
+    }
+
+    // 3. Developers: same
+    for (const dev of developers) {
+      const { rows: dr } = await client.query(
+        `INSERT INTO developers (name) VALUES ($1)
+           ON CONFLICT (name) DO UPDATE SET name = EXCLUDED.name
+         RETURNING id`,
+        [dev],
+      );
+      await client.query(
+        `INSERT INTO games_developers (game_id, developer_id) VALUES ($1, $2)
+           ON CONFLICT DO NOTHING`,
+        [gameId, dr[0].id],
+      );
+    }
+
+    await client.query('COMMIT');
+    return gameId;
+  } catch (err) {
+    await client.query('ROLLBACK');
+    throw err;
+  } finally {
+    client.release();
+  }
+}
+
 module.exports = {
   getAllGames,
   getGameInfo,
@@ -154,4 +215,5 @@ module.exports = {
   getAllDevelopers,
   editGame,
   deleteGame,
+  addGame,
 };

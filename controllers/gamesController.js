@@ -61,4 +61,23 @@ async function postDeletion(req, res) {
   }
 }
 
-module.exports = { get, postEdit, postDeletion };
+async function postAddition(req, res) {
+  const errors = validationResult(req);
+  if (!errors.isEmpty(errors)) {
+    console.error(errors);
+    const unique = [...new Map(errors.array().map((e) => [e.msg, e])).values()];
+    return res.status(400).json({ errors: unique });
+  }
+  try {
+    console.log('adding...');
+    const id = await db.addGame(req.body);
+    const game = await db.getGameInfo(id);
+    console.log('added', game);
+    res.sendStatus(200);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Database error');
+  }
+}
+
+module.exports = { get, postEdit, postDeletion, postAddition };

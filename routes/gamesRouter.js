@@ -41,5 +41,6 @@ const validateDeletion = [
 gamesRouter.get('/', gamesController.get);
 gamesRouter.post('/edit/:id', validateEdit, gamesController.postEdit);
 gamesRouter.post('/delete/:id', validateDeletion, gamesController.postDeletion);
+gamesRouter.post('/add', validateEdit, gamesController.postAddition);
 
 module.exports = gamesRouter;
