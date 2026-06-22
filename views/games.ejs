@@ -17,9 +17,14 @@
     <%- include('navBar', {currentPage: currentPage}) %>
     <i><h1 id="title"><%= title %></h1></i>
     <div class="games glass">
-      <search>
+      <div class="searchAndAdd">
+        <search>
         <input id="titleSearch" class="glass" type="text" placeholder="search by title">
       </search>
+      <div class="addContainer">
+        <button class="add glass"><svg xmlns="http://www.w3.org/2000/svg" height="29.2px" viewBox="0 -960 960 960" width="29.2px" fill="#e3e3e3"><path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/></svg></button>
+      </div>
+      </div>
       <div class="filters">
         <select id="genreFilter" placeholder="Filter by genre...">
         <option value="">All genres</option>
@@ -120,7 +125,7 @@
           <div>Admin Password</div>
           <input type="password" value="" id="comfimationPassword" name="adminPassword" class="glass" required>
         </label>
-        <ul id="formErrors" class="errorList"></ul>
+        <ul id="deleteFormErrors" class="errorList"></ul>
 
         <div class="buttons">
           <button class="cancel glass" onclick="cancelBtnHandler()" type="button">Cancel</button>
@@ -128,15 +133,60 @@
         </div>
       </form>
     </div>
+    <div class="addWrapper">
+      <form method="post" id="addForm" class="glass" onsubmit="addSubmitHandler(event)">
+        <h3>Add Game</h3>
+        <label for="addName">
+          <div>Name</div>
+          <input type="text" name="name" id="addName" class="glass">
+        </label>
+        <label for="addGenre">
+          <div>Genres</div>
+          <input type="text" id="addGenre" name="genres" class="glass">
+        </label>
+        <label for="addDevelopers">
+          <div>Developers</div>
+          <input type="text" id="addDevelopers" name="developers" class="glass">
+        </label>
+        <label for="addYear">
+          <div>Year</div>
+          <input type="number" id="addYear" name="release_date" class="glass">
+        </label>
+        <label for="addAbout">
+          <div>About</div>
+          <input type="text" id="addAbout" name="game_link" class="glass">
+        </label>
+        <label for="addQuantity">
+          <div>Quantity</div>
+          <input type="number" id="addQuantity" name="quantity" class="glass">
+        </label>
+        <label for="addAdminPassword">
+          <div>Admin Password</div>
+          <input type="password" id="addAdminPassword" name="adminPassword" class="glass" required>
+        </label>
+        <ul id="addFormErrors" class="errorList"></ul>
+        <div class="buttons">
+          <button class="cancel glass" type="button" onclick="cancelBtnHandler()">Cancel</button>
+          <button id="submit" type="submit" class="glass">Add</button>
+        </div>
+      </form>
+    </div>
+
 <script>
   const editWrapper = document.querySelector('.editWrapper');
   const deleteWrapper = document.querySelector('.deleteWrapper')
   const editform = document.getElementById('editForm');
   const deleteForm = document.getElementById('deleteForm');
+  const addForm = document.getElementById('addForm');
   const inputs = document.querySelectorAll('#editForm input');
   const deleteInpt = document.querySelector('#comfimationPassword');
+  const addInpts = document.querySelectorAll('#addForm input');
   const list = document.getElementById('formErrors');
+  const deleteList = document.getElementById('deleteFormErrors');
+  const addList = document.getElementById('addFormErrors');
   const RUsure = document.querySelector('.RUsure');
+  const addButton = document.querySelector('.add');
+  const addWrapper = document.querySelector('.addWrapper');
 
 
   function openEditForm(e) {
@@ -154,13 +204,24 @@
     editWrapper.classList.add('active');
 
   }
+  addButton.addEventListener('click', (e) => {
+      addWrapper.classList.add('active');
+  })
   function cancelBtnHandler() {
     editWrapper.classList.remove('active');
     deleteWrapper.classList.remove('active');
+    addWrapper.classList.remove('active');
     for (let input of inputs) {
       input.value = '';
     }
-    list.innerHTML = ''
+    for (let input of addInpts) {
+      input.value = '';
+    }
+    deleteInpt.value = '';
+
+    list.innerHTML = '';
+    deleteList.innerHTML = '';
+    addList.innerHTML = '';
 
   }
   async function submitHandler(e) {
@@ -213,12 +274,36 @@
 
     if (res.status === 400) {
       const { errors } = await res.json();
-      list.innerHTML = errors.map(e => `<li>${e.msg}</li>`).join('');
+      deleteList.innerHTML = errors.map(e => `<li>${e.msg}</li>`).join('');
     }
     } catch(err) {
       console.error(err)
     }
 
+
+  }
+  async function addSubmitHandler(e) {
+    e.preventDefault()
+    try {
+      const res = await fetch(`/games/add`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(new FormData(addForm)),
+    });
+    
+    if (res.ok) {
+      addWrapper.classList.remove('active');
+      location.reload()
+    }
+
+    if (res.status === 400) {
+      const { errors } = await res.json();
+      addList.innerHTML = errors.map(e => `<li>${e.msg}</li>`).join('');
+    }
+    } catch(err) {
+      console.error(err)
+    }
+  
 
   }
 </script>
@@ -255,6 +340,7 @@
       popUp.dataset.parentId = tableRowId;
     }
   }
+
 </script>
 <script type="module">
   import Fuse from '/libs/fuse.mjs';

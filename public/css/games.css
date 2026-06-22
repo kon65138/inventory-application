@@ -7,6 +7,21 @@
   border-radius: 20px;
 }
 
+.searchAndAdd {
+  align-items: center;
+  display: flex;
+  width: 100%;
+  gap: 1rem;
+}
+
+.add {
+  border-radius: 30px;
+}
+
+search {
+  flex: 1;
+}
+
 #titleSearch {
   width: 100%;
   padding: 0.6rem;
@@ -311,7 +326,8 @@ tr.last-visible td:last-child {
 }
 
 .editWrapper,
-.deleteWrapper {
+.deleteWrapper,
+.addWrapper {
   width: 100vw;
   height: 100vh;
   position: absolute;
@@ -322,7 +338,8 @@ tr.last-visible td:last-child {
 }
 
 .editWrapper.active,
-.deleteWrapper.active {
+.deleteWrapper.active,
+.addWrapper.active {
   display: flex;
   background: rgba(255, 255, 255, 0.1); /* white tint, low opacity */
   backdrop-filter: blur(8px); /* the frosted glass blur */
@@ -330,7 +347,8 @@ tr.last-visible td:last-child {
 }
 
 #editForm,
-#deleteForm {
+#deleteForm,
+#addForm {
   width: 80vw;
   padding: 1rem;
   gap: 1rem;
@@ -354,12 +372,14 @@ label {
 }
 
 #editForm div,
-#deleteForm div {
+#deleteForm div,
+#addForm div {
   flex: 0 0 1;
 }
 
 #editForm input,
-#deleteForm input {
+#deleteForm input,
+#addForm input {
   color: rgba(2, 61, 85, 0.808);
   background: rgba(100, 210, 237, 0.15);
   backdrop-filter: blur(12px);
@@ -369,25 +389,28 @@ label {
 }
 
 #editForm input:focus,
-#deleteForm input:focus {
+#deleteForm input:focus,
+#addForm input:focus {
   outline: none;
 }
 
 #editForm .buttons,
-#deleteForm .buttons {
+#deleteForm .buttons,
+#addForm .buttons {
   display: flex;
   gap: 1rem;
 }
 
 #editForm .buttons button,
-#deleteForm .buttons button {
+#deleteForm .buttons button,
+#addForm .buttons button {
   flex: 1;
   border-radius: 20px;
   padding: 0.5rem;
   font-weight: bold;
 }
 
-#formErrors {
+.errorList {
   list-style-type: circle;
   gap: 1rem;
   color: rgba(255, 0, 0, 0.603);
@@ -417,4 +440,9 @@ label {
 
 .RUsure {
   color: rgba(2, 61, 85, 0.808);
+}
+
+.add:hover {
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(14px);
 }
