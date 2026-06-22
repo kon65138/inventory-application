@@ -15,10 +15,9 @@ make about page, HALF DONE!!!!
 make games table scrollable instead of page (page scrolling with blur = bad preformance), DONE!!!
 make sure inputs are sanitized DONE!!!!,
 add delete and edit functions (with password) DONE!!!!,
-add create method,
+add create method DONE!!!!,
 make category creatation better (no action & adventure and action - adventure as seperate catagories)
-add some more cool animations,
-fix the missalignment of the dropdowns
+add some more cool animations DONE!!!!,
 
 
 

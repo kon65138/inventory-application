@@ -3,6 +3,10 @@
   font-family: 'DM Sans', sans-serif;
 }
 
+html {
+  background-color: aquamarine;
+}
+
 body {
   background-image: url('/imgs/brotherhood-studio-_7lr3Fs9QHU-unsplash.jpg');
   background-size: cover;
@@ -18,11 +22,12 @@ body {
 }
 
 #title {
+  margin: 4rem 0 0 0;
+  width: 80vw;
   font-weight: 100;
   font-family: Georgia, 'Times New Roman', Times, serif;
-  width: 80vw;
   font-size: 4rem;
-  margin-bottom: 0;
+  padding: 0;
   padding-left: 1rem;
   color: rgb(2, 24, 66);
 }
@@ -42,6 +47,7 @@ body {
 }
 
 .navBar {
+  flex: 0 0 1;
   position: sticky;
   top: 1rem;
   display: flex;
@@ -51,6 +57,7 @@ body {
   border-radius: 20px;
   margin: 0;
   padding: 0.25rem;
+  z-index: 50;
 }
 
 #nav-menu,
@@ -64,13 +71,15 @@ body {
 }
 
 #nav-menu a {
+  display: flex; /* make the whole pill the click target */
+  align-items: center;
+  flex: 1; /* fill the li, no dead zones around the text */
   text-decoration: none;
   color: rgb(255, 255, 255);
   font-weight: bold;
   padding: 0.5rem;
   margin: 0;
   border-radius: 20px;
-  transition: background 100ms ease-in-out;
 }
 
 #nav-menu a[aria-current='page'] {
@@ -80,4 +89,32 @@ body {
 
 #nav-menu a:hover {
   background: rgba(61, 61, 61, 0.137);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* fade in page content (skip the navbar so it stays put, and the
+   Tom Select dropdown so it gets its own dropdown animation instead) */
+body > *:not(.navBar):not(.ts-dropdown) {
+  animation: fadeIn 500ms ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body > *:not(.navBar):not(.ts-dropdown) {
+    animation: none;
+  }
+}
+
+body > *:not(.navBar):not(.ts-dropdown):nth-of-type(2) {
+  animation-delay: 100ms;
+}
+body > *:not(.navBar):not(.ts-dropdown):nth-of-type(3) {
+  animation-delay: 200ms;
 }

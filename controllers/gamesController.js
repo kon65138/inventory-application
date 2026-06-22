@@ -51,7 +51,7 @@ async function postDeletion(req, res) {
   const id = Number(req.params.id);
   try {
     const game = await db.getGameInfo(id);
-    console.log(`deleting ${game.name}...`);
+    console.log('deleting', game);
     await db.deleteGame(id);
     console.log('deleted');
     res.sendStatus(200);

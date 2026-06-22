@@ -71,6 +71,17 @@ search {
   background: rgba(255, 255, 255, 0.08);
 }
 
+@keyframes tsDropdownIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .ts-dropdown {
   will-change: backdrop-filter;
   margin: 0;
@@ -82,6 +93,14 @@ search {
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
   overflow: hidden;
+  transform-origin: top;
+  animation: tsDropdownIn 150ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ts-dropdown {
+    animation: none;
+  }
 }
 
 .ts-dropdown .active {

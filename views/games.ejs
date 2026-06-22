@@ -15,7 +15,7 @@
     <script id="gamesData" type="application/json"><%- JSON.stringify(allData).replace(/</g, '\\u003c') %></script>
 
     <%- include('navBar', {currentPage: currentPage}) %>
-    <i><h1 id="title"><%= title %></h1></i>
+    <i class="titleContainer"><h1 id="title"><%= title %></h1></i>
     <div class="games glass">
       <div class="searchAndAdd">
         <search>
@@ -193,7 +193,7 @@
     const data = JSON.parse(document.getElementById('gamesData').textContent);
  
     const id = Number(popUp.dataset.parentId);
-    const currentData = data[id - 1];
+    const currentData = data.find(item => item.id === id);
     inputs[0].value = currentData.name;
     inputs[1].value = currentData.genres;
     inputs[2].value = currentData.developers;
@@ -252,7 +252,7 @@
     const data = JSON.parse(document.getElementById('gamesData').textContent);
 
     const id = Number(popUp.dataset.parentId);
-    const currentData = data[id - 1];
+    const currentData = data.find(item => item.id === id);
     RUsure.textContent = `Are you sure you want to delete ${currentData.name} from the DataBase?`;
     deleteWrapper.classList.add('active');
   };
@@ -394,7 +394,19 @@
   noResultsDiv.style.display = firstVisible ? 'none' : 'block';
 }
 
-  document.getElementById('titleSearch').addEventListener('input', filterTable);
+function debounce(fn, ms) {
+  let timer;
+  return () => {
+    clearTimeout(timer);
+    timer = setTimeout(fn, ms);
+  };
+}
+
+
+document.getElementById('titleSearch').addEventListener('input', debounce(filterTable, 500));
+
+
+
 
   // Tom Select fires 'change' on the underlying <select>
   document.getElementById('genreFilter').addEventListener('change', filterTable);
