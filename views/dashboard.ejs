@@ -47,8 +47,8 @@
           <canvas id="genreChart"></canvas>
         </div>
         <div class="tableWrapper">
-          <div class="headerTable">
-            <table>
+          <div class="headerTableWrapper">
+            <table class="headerTable">
               <caption class="tableCaption">low stock games</caption>
               <tr>
                 <th>Name</th>
@@ -106,6 +106,21 @@
   document.querySelectorAll('[data-count]').forEach(el => {
     countUp(el, parseInt(el.dataset.count));
   });
+
+    // Keep the header table the same rendered width as the body table so their
+  // fixed-layout columns line up across browsers (Chrome/Firefox size native
+  // scrollbars differently, so a hardcoded gutter can't match both).
+  const headerTable = document.querySelector('.headerTable');
+  const bodyTable = document.getElementById('lowStockTable');
+
+  function syncHeaderWidth() {
+    headerTable.style.width = bodyTable.offsetWidth + 'px';
+  }
+
+  // Fires on window resize and when the scrollbar appears/disappears as
+  // filtering changes the row count.
+  new ResizeObserver(syncHeaderWidth).observe(bodyTable);
+  syncHeaderWidth();
 </script>
   </body>
 </html>

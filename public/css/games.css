@@ -174,15 +174,19 @@ search {
   scrollbar-gutter: stable;
 }
 
-.headerTable {
+.headerTableWrapper {
   background: rgba(255, 255, 255, 0.377);
+}
+
+.headerTable {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
   width: 100%;
   table-layout: fixed; /* both must match for columns to line up */
   border: none;
   border-spacing: 0;
-  padding-right: 10px;
+  /* width is synced to the body table in JS (syncHeaderWidth) so columns line
+     up regardless of the browser's native scrollbar width. */
 }
 
 .headerTable th {

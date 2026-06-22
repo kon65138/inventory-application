@@ -44,9 +44,11 @@
   new TomSelect('#developerFilter', { maxOptions: null, refreshThrottle: 0, dropdownParent: 'body' });
 </script>
       <div class="tableWrapper" >
-        <table class="headerTable">
+        <div class="headerTableWrapper">
+          <table class="headerTable">
           <tr><th>Name</th><th>Genres</th><th>Developers</th><th>Year</th><th>About</th><th>Quantity</th></tr>
         </table>
+        </div>
         <div class="tableScroll">
           <table id="resultsTable">
               <% allData.forEach(row => { %>
@@ -412,6 +414,21 @@ document.getElementById('titleSearch').addEventListener('input', debounce(filter
   document.getElementById('genreFilter').addEventListener('change', filterTable);
   document.getElementById('developerFilter').addEventListener('change', filterTable);
   filterTable()
+
+  // Keep the header table the same rendered width as the body table so their
+  // fixed-layout columns line up across browsers (Chrome/Firefox size native
+  // scrollbars differently, so a hardcoded gutter can't match both).
+  const headerTable = document.querySelector('.headerTable');
+  const bodyTable = document.getElementById('resultsTable');
+
+  function syncHeaderWidth() {
+    headerTable.style.width = bodyTable.offsetWidth + 'px';
+  }
+
+  // Fires on window resize and when the scrollbar appears/disappears as
+  // filtering changes the row count.
+  new ResizeObserver(syncHeaderWidth).observe(bodyTable);
+  syncHeaderWidth();
 </script>
 
 

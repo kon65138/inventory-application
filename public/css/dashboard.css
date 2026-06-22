@@ -65,16 +65,15 @@
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.headerTable {
-  width: 100%;
+.headerTableWrapper {
   background: rgba(255, 255, 255, 0.377);
 }
 
-.headerTable table {
+.headerTable {
+  width: 100%;
   border: none;
   border-spacing: 0;
   border-radius: 20px;
-  padding-right: 10px;
 }
 
 .tableScroll {
